@@ -2,59 +2,112 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
       dark
+      class="red"
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
+      <div class="d-flex align-center mr-4">
         <v-img
           alt="Vuetify Name"
           class="shrink mt-1 hidden-sm-and-down"
           contain
           min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          src="./assets/logo.png"
           width="100"
         />
       </div>
 
+      <h1>myApp</h1>
+
       <v-spacer></v-spacer>
 
+
+
+
+
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        v-on:click="Home()"
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <span class="mr-2">Home</span>
       </v-btn>
+
+
+      <v-btn
+        v-if="$store.state.token == 'undefined'"
+        v-on:click="Login()"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Login</span>
+      </v-btn>
+
+
+      <v-btn
+        v-if="$store.state.token == 'undefined'"
+        v-on:click="Register()"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Register</span>
+      </v-btn>
+
+      
+      <v-btn
+        v-if="$store.state.token !== 'undefined'"
+        v-on:click="Logout()"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Logout</span>
+      </v-btn>
+
+
+
+
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <Home v-if="$store.state.page == 'home'" />
+      <Login v-if="$store.state.page == 'login'" />
+      <Register v-if="$store.state.page == 'register'"></Register>
+      <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import Home from './components/Home';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import Register from './components/Register';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    Home,
+    Login,
+    Logout,
+    Register
   },
 
   data: () => ({
-    //
   }),
+
+  methods: {
+    Home: function(){
+      this.$store.dispatch('goToPage', 'home');
+    },
+    Login: function(){
+      this.$store.dispatch('goToPage', 'login');
+    },
+    Register: function(){
+      this.$store.dispatch('goToPage', 'register');
+    },
+    Logout: function(){
+      this.$store.dispatch('goToPage', 'logout');
+    },
+  }
 };
 </script>
