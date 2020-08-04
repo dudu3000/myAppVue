@@ -60,6 +60,14 @@
         text
       >
         <span class="mr-2">Logout</span>
+      </v-btn>  
+
+      <v-btn
+        v-on:click="Hello()"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Hello</span>
       </v-btn>
 
 
@@ -72,6 +80,7 @@
       <Login v-if="$store.state.page == 'login'" />
       <Register v-if="$store.state.page == 'register'"></Register>
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
+      <HelloWorld v-if="$store.state.page == 'hello'"></HelloWorld>
     </v-main>
   </v-app>
 </template>
@@ -81,6 +90,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
+import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
@@ -89,7 +99,8 @@ export default {
     Home,
     Login,
     Logout,
-    Register
+    Register,
+    HelloWorld
   },
 
   data: () => ({
@@ -107,6 +118,9 @@ export default {
     },
     Logout: function(){
       this.$store.dispatch('goToPage', 'logout');
+    },
+    Hello: function(){
+      this.$store.dispatch('goToPage', 'hello');
     },
   }
 };
