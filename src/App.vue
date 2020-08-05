@@ -34,6 +34,16 @@
 
 
       <v-btn
+        v-if="$store.state.token !== 'undefined'"
+        v-on:click="OtherUser()"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Search for users</span>
+      </v-btn>
+
+
+      <v-btn
         v-if="$store.state.token == 'undefined'"
         v-on:click="Login()"
         target="_blank"
@@ -76,8 +86,9 @@
     </v-app-bar>
 
     <v-main>
-      <Home v-if="$store.state.page == 'home'" />
-      <Login v-if="$store.state.page == 'login'" />
+      <Home v-if="$store.state.page == 'home'"></Home>
+      <OtherUser v-if="$store.state.page == 'otheruser'"></OtherUser>
+      <Login v-if="$store.state.page == 'login'"></Login>
       <Register v-if="$store.state.page == 'register'"></Register>
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
       <HelloWorld v-if="$store.state.page == 'hello'"></HelloWorld>
@@ -91,6 +102,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
 import HelloWorld from './components/HelloWorld';
+import OtherUser from './components/OtherUser';
 
 export default {
   name: 'App',
@@ -100,7 +112,8 @@ export default {
     Login,
     Logout,
     Register,
-    HelloWorld
+    HelloWorld,
+    OtherUser
   },
 
   data: () => ({
@@ -121,6 +134,9 @@ export default {
     },
     Hello: function(){
       this.$store.dispatch('goToPage', 'hello');
+    },
+    OtherUser: function(){
+      this.$store.dispatch('goToPage', 'otheruser');
     },
   }
 };

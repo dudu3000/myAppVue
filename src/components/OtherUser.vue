@@ -19,9 +19,19 @@
           
                 <div v-if="$store.state.token !== 'undefined'">
 
-                  <div v-if="firstCall == 0">
-                    {{ getPosts() }}
-                  </div>
+                <v-text-field
+                  label="Search"
+                  required
+                  placeholder="Username"
+                  v-model="username"
+                  @keypress="getPosts"
+                ></v-text-field>
+                
+                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts()">Search user profile</v-btn><br>
+                  <br>
+                  <br>
+                  <br>
+
                   <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsPrevPage()" v-if="prevPage !== ''">Previous page</v-btn>
                   <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsNextPage()" v-if="nextPage !== ''" class="right">Next page</v-btn>
   
@@ -52,14 +62,14 @@
 
 <script>
 export default { 
-  name: 'home',
+  name: 'otheruser',
   data(){
       return {
         page: 1,
         posts: [],
         prevPage: '',
         nextPage: '',
-        firstCall: 0,
+        username: '',
         files: [],
         postId: 0,
         postTitle: '',
@@ -68,14 +78,6 @@ export default {
   },
   methods:{
     getPosts: function(){
-      this.firstCall = 1;
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:3000/user/info',
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response)=>{
         this.axios({
           method: 'post',
           url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
@@ -83,7 +85,7 @@ export default {
             'authorization': this.$store.state.token
           },
           data:{
-            userName: response.data.userName
+            userName: this.username
           }
         }).then((response) => {
           this.posts = response.data.posts.results;
@@ -102,19 +104,11 @@ export default {
           console.log(error);
           this.validReturn = null;
         });
-      })
       
     },
 
     getPostsNextPage: function(){
       this.page += 1;
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:3000/user/info',
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response)=>{
         this.axios({
           method: 'post',
           url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
@@ -122,7 +116,7 @@ export default {
             'authorization': this.$store.state.token
           },
           data:{
-            userName: response.data.userName
+            userName: this.username
           }
         }).then((response) => {
           this.posts = response.data.posts.results;
@@ -141,20 +135,12 @@ export default {
           console.log(error);
           this.validReturn = null;
         });
-      })
 
     },
 
     
     getPostsPrevPage: function(){
       this.page -= 1;
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:3000/user/info',
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response)=>{
         this.axios({
           method: 'post',
           url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
@@ -162,7 +148,7 @@ export default {
             'authorization': this.$store.state.token
           },
           data:{
-            userName: response.data.userName
+            userName: this.username
           }
         }).then((response) => {
           this.posts = response.data.posts.results;
@@ -181,7 +167,6 @@ export default {
           console.log(error);
           this.validReturn = null;
         });
-      })
 
     }
   }
