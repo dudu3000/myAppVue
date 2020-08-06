@@ -31,10 +31,11 @@
                       <div class="title">
                         <h2>{{ posts[file.index].title }}</h2>
                       </div>
-                      <div>
+                      <div class="description">
                         <h3>{{ posts[file.index].description }}</h3>
                       </div>
                       <img :src="require('./../../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
+                      
                     </div>
                   </div>
                 </div>
@@ -212,6 +213,14 @@ export default {
   object-fit: cover;
   border-radius: 30px;
   box-shadow: 20px 20px 10px #000000;
+  transition: 0.5s;
+}
+
+.image:hover{
+  box-shadow: 18px 18px 10px #000000;
+  width:490px;
+  height: 490px;
+  transition: 0.5s;
 }
 
 .right{
@@ -222,6 +231,9 @@ export default {
   font-weight: bold;
   font-style: italic;
   text-shadow: 3px 3px #000000;
-  border-bottom: 2px solid #000000;
+  border-bottom: 2px solid #ffffff;
+}
+.description{
+  width: 500px;
 }
 </style>
