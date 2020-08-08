@@ -11,7 +11,7 @@
             outlined
             centered
             justify="center"
-            height="auto"
+            height="800px"
             >
               <h1>Home</h1>
                 <b>Welcome</b><br>
@@ -27,15 +27,16 @@
   
 
                   <div class="flex">
-                    <div v-for="file in files" :key="file.name">
+                    <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
+                      <div class="flexitem">
                       <div class="title">
-                        <h2>{{ posts[file.index].title }}</h2>
+                        <h3>{{ posts[file.index].title }}</h3>
                       </div>
                       <div class="description">
-                        <h3>{{ posts[file.index].description }}</h3>
+                        <h4>{{ posts[file.index].description }}</h4>
                       </div>
                       <img :src="require('./../../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
-                      
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -193,47 +194,4 @@ export default {
 
 
 <style>
-.container{
-  padding: 20px;
-}
-
-.flex{
-  display: flex;
-  width: 100%;
-  height: 1300px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-content: space-around;
-}
-
-.image{
-  width:500px;
-  height: 500px;
-  object-fit: cover;
-  border-radius: 30px;
-  box-shadow: 20px 20px 10px #000000;
-  transition: 0.5s;
-}
-
-.image:hover{
-  box-shadow: 18px 18px 10px #000000;
-  width:490px;
-  height: 490px;
-  transition: 0.5s;
-}
-
-.right{
-  float: right;
-}
-
-.title{
-  font-weight: bold;
-  font-style: italic;
-  text-shadow: 3px 3px #000000;
-  border-bottom: 2px solid #ffffff;
-}
-.description{
-  width: 500px;
-}
 </style>

@@ -141,3 +141,55 @@ export default {
   }
 };
 </script>
+
+<style>
+
+.container{
+  padding: 20px;
+}
+
+.flex{
+  display: flex;
+  width: 100%;
+  height: 600px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+}
+
+.image{
+  object-fit: cover;
+  border-radius: 30px;
+  box-shadow: 15px 15px 10px #000000;
+  transition: 0.5s;
+  width:500px;
+  max-width:100%;
+  height:100%;
+}
+
+.image:hover{
+  box-shadow: 0px 0px 10px #000000;
+  transition: 0.5s;
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
+.right{
+  float: right;
+}
+.flexitem{
+  height:200px;
+}
+.title{
+  font-weight: bold;
+  font-style: italic;
+  text-shadow: 2px 2px 7px #000000;
+  border-bottom: 2px solid #ffffff;
+  width:80%
+}
+.description{
+  width: 200px;
+}
+</style>
