@@ -18,7 +18,17 @@
                 <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
           
                 <div v-if="$store.state.token !== 'undefined'">
-
+                  
+                  <v-btn
+                    target="_blank"
+                    class="right"
+                    color="yellow darken-4"
+                    dark
+                    rounded
+                    v-on:click="Post()"
+                  >
+                    Make a post
+                  </v-btn>
                   <div v-if="firstCall == 0">
                     {{ getPosts() }}
                   </div>
@@ -35,7 +45,7 @@
                       <div class="description">
                         <h4>{{ posts[file.index].description }}</h4>
                       </div>
-                      <img :src="require('./../../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
+                      <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
                       </div>
                     </div>
                   </div>
@@ -185,6 +195,10 @@ export default {
         });
       })
 
+    },
+
+    Post: function(){
+      this.$store.dispatch('goToPage', 'post');
     }
   }
 }

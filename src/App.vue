@@ -92,6 +92,7 @@
       <Register v-if="$store.state.page == 'register'"></Register>
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
       <HelloWorld v-if="$store.state.page == 'hello'"></HelloWorld>
+      <Post v-if="$store.state.page == 'post'"></Post>
     </v-main>
   </v-app>
 </template>
@@ -103,6 +104,7 @@ import Logout from './components/Logout';
 import Register from './components/Register';
 import HelloWorld from './components/HelloWorld';
 import OtherUser from './components/OtherUser';
+import Post from './components/Post';
 
 export default {
   name: 'App',
@@ -113,7 +115,8 @@ export default {
     Logout,
     Register,
     HelloWorld,
-    OtherUser
+    OtherUser,
+    Post
   },
 
   data: () => ({

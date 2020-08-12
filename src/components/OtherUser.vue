@@ -41,7 +41,7 @@
                       <div class="description">
                         <h3>{{ posts[file.index].description }}</h3>
                       </div>
-                      <img :src="require('./../../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
+                      <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
                       </div>
                     </div>
                   </div>
