@@ -11,7 +11,7 @@
             outlined
             centered
             justify="center"
-            height="800px"
+            height="1300px"
             >
               <h1>Home</h1>
                 <b>Welcome</b><br>
@@ -19,22 +19,22 @@
           
                 <div v-if="$store.state.token !== 'undefined'">
                   
+                  <div v-if="firstCall == 0">
+                    {{ getPosts() }}
+                  </div>
+                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsPrevPage()" v-if="prevPage !== ''">Previous page</v-btn>
+                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsNextPage()" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
+  
                   <v-btn
                     target="_blank"
                     class="right"
-                    color="yellow darken-4"
+                    color="red accent-4"
                     dark
                     rounded
                     v-on:click="Post()"
                   >
                     Make a post
                   </v-btn>
-                  <div v-if="firstCall == 0">
-                    {{ getPosts() }}
-                  </div>
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsPrevPage()" v-if="prevPage !== ''">Previous page</v-btn>
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsNextPage()" v-if="nextPage !== ''" class="right">Next page</v-btn>
-  
 
                   <div class="flex">
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
@@ -43,13 +43,25 @@
                         <h3>{{ posts[file.index].title }}</h3>
                       </div>
                       <div class="description">
-                        <h4>{{ posts[file.index].description }}</h4>
+                        <div v-if="posts[file.index].description.length > 15" style="display: inline-flex;">
+                          <h4 v-for="index in 14" :key="index">
+                            {{ posts[file.index].description[index-1] }}
+                            <div v-if="posts[file.index].description[index-1] == ' '"><pre> </pre></div>
+                          </h4>
+                          <h4>...</h4>
+                        </div>
+                        <div v-if="posts[file.index].description.length <= 15">
+                            <h4>{{ posts[file.index].description }}</h4>
+                        </div>
+                        <div v-if="posts[file.index].description == ''">
+                          <pre> </pre>
+                        </div>
                       </div>
                       <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
                       </div>
                     </div>
                   </div>
-                </div>
+                </div><br>
           </v-card>
           </v-row>
         </v-col>

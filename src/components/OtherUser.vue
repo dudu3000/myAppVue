@@ -11,7 +11,7 @@
             outlined
             centered
             justify="center"
-            height="1000px"
+            height="1300px"
             >
               <h1>Search</h1>
                 <b>Welcome</b><br>
@@ -39,7 +39,16 @@
                         <h2>{{ posts[file.index].title }}</h2>
                       </div>
                       <div class="description">
-                        <h3>{{ posts[file.index].description }}</h3>
+                        <div v-if="posts[file.index].description.length > 15" style="display: inline-flex;">
+                          <h4 v-for="index in 14" :key="index">
+                            {{ posts[file.index].description[index-1] }}
+                            <div v-if="posts[file.index].description[index-1] == ' '"><pre> </pre></div>
+                          </h4>
+                          <h4>...</h4>
+                        </div>
+                        <div v-if="posts[file.index].description.length <= 15">
+                            <h4>{{ posts[file.index].description }}</h4>
+                        </div>
                       </div>
                       <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
                       </div>
@@ -98,7 +107,7 @@ export default {
             this.prevPage = '';
         }, 
         (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
+          this.errorReturn = 'There went something wrong!';
           console.log(error);
           this.validReturn = null;
         });
@@ -129,7 +138,7 @@ export default {
             this.prevPage = '';
         }, 
         (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
+          this.errorReturn = 'There went something wrong!';
           console.log(error);
           this.validReturn = null;
         });
@@ -161,7 +170,7 @@ export default {
             this.prevPage = '';
         }, 
         (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
+          this.errorReturn = 'There went something wrong!';
           console.log(error);
           this.validReturn = null;
         });

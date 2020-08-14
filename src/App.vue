@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <div v-if="$store.state.errorCode == 401">
+      {{ $store.dispatch('goToPage', 'logout') }}
+    </div>
     <v-app-bar
       app
       dark
@@ -70,14 +73,6 @@
         text
       >
         <span class="mr-2">Logout</span>
-      </v-btn>  
-
-      <v-btn
-        v-on:click="Hello()"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Hello</span>
       </v-btn>
 
 
@@ -91,7 +86,6 @@
       <Login v-if="$store.state.page == 'login'"></Login>
       <Register v-if="$store.state.page == 'register'"></Register>
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
-      <HelloWorld v-if="$store.state.page == 'hello'"></HelloWorld>
       <Post v-if="$store.state.page == 'post'"></Post>
     </v-main>
   </v-app>
@@ -102,7 +96,6 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
-import HelloWorld from './components/HelloWorld';
 import OtherUser from './components/OtherUser';
 import Post from './components/Post';
 
@@ -114,7 +107,6 @@ export default {
     Login,
     Logout,
     Register,
-    HelloWorld,
     OtherUser,
     Post
   },
@@ -135,9 +127,6 @@ export default {
     Logout: function(){
       this.$store.dispatch('goToPage', 'logout');
     },
-    Hello: function(){
-      this.$store.dispatch('goToPage', 'hello');
-    },
     OtherUser: function(){
       this.$store.dispatch('goToPage', 'otheruser');
     },
@@ -154,7 +143,7 @@ export default {
 .flex{
   display: flex;
   width: 100%;
-  height: 600px;
+  height: 900px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -168,7 +157,7 @@ export default {
   transition: 0.5s;
   width:500px;
   max-width:100%;
-  height:100%;
+  height:300px;
 }
 
 .image:hover{

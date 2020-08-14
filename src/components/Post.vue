@@ -15,8 +15,9 @@
             justify="center"
             >
 
-          <h1>Login</h1>
-          
+          <h1>Compose a post</h1>
+
+
           <v-alert
             type="success"
             v-if="validReturn !== null"
@@ -34,22 +35,38 @@
             {{errorReturn}}
           </v-alert>
 
-          <form enctype="multipart/form-data" @submit.prevent="post">
-          
-          <v-text-field
-            label="Title"
-            required
-            placeholder="Title"
-            v-model="title"
-          ></v-text-field>
-          <v-text-field
-            label="Description"
-            placeholder="Description"
-            v-model="description"
-          ></v-text-field>
-          
-           <input type="file" ref="file" @change="selectFile"/>
-          <v-btn rounded color="yellow darken-4" dark v-on:click="post()">Post</v-btn></form>
+          <form @submit.prevent="post" enctype="multipart/form-data">
+            <div>
+              
+              <v-text-field
+                label="Title"
+                required
+                placeholder="Title"
+                v-model="title"
+              ></v-text-field>
+              <v-textarea
+                label="Description"
+                v-model="description"
+              ></v-textarea>
+
+              <label for="file">Upload File</label><br>
+                <v-file-input
+                  required
+                  accept="image/png, image/jpeg, image/bmp"
+                  placeholder="Upload"
+                  prepend-icon="mdi-camera"
+                  label="Image"
+                  ref="file"
+                  v-model="file"
+                ></v-file-input>
+
+            </div>
+            
+            <button class="submit">SEND</button>
+
+          </form>
+
+
 
             </v-card>
           </v-row>
@@ -71,53 +88,45 @@ export default {
       validReturn: null,
       errorReturn: null,
       title: null,
-      description: null,
-      file: null,
-      token: 'undefined',
+      description: '',
+      file: "",
       axios: require('axios').default,
     }
   },
 
   methods: {
-    selectFile(){
-      this.file = this.$refs.file.files[0];
-      console.log(this.file);
-    },
     async post () {
         const formData = new FormData();
-        formData.append('file', this.file);
-        try{
-        await this.axios.post('http://localhost:3000/post/upload', formData, {headers:{'authorization': this.$store.state.token}}, {'title': 'titleTest'}
-        ).then(res => {
-          console.log(res);
+        formData.append("file", this.file);
+
+        this.axios({
+          method: 'post',
+          url: 'http://localhost:3000/post/upload',
+          headers:{
+            'authorization': this.$store.state.token
+          },
+          data: formData,
+          params: {
+            'title': this.title,
+            'description': this.description
+          }
+        }).then((res) => {
+            console.log(res);
+            this.validReturn = res.data.text;
+            this.errorReturn = null;
+
+            this.title = null;
+            this.description = '';
+            this.file = '';
+        }, 
+        (error) => {
+          this.errorReturn = error; 
+          this.validReturn = null;
+          console.log(error + formData);
+          this.title = null;
+          this.description = '';
+          this.file = '';
         });
-        }catch(err){
-          console.log(err);
-        }
-
-
-
-
-        // this.axios({
-        //   method: 'post',
-        //   url: 'http://localhost:3000/post/upload',
-        //   headers:{
-        //     'authorization': this.$store.state.token
-        //   },
-        //   data:{
-        //       title: 'test',
-        //       description: 'test',
-        //       formDataa: JSON.stringify(this.file.size)
-        //   },
-        // }).then((response) => {
-        //     this.$store.state.page = 'home';
-        //     console.log(response);
-        // }, 
-        // (error) => {
-        //   this.errorReturn = error; 
-        //   console.log(error + formData);
-        //   this.validReturn = null;
-        // });
       
 
     }
@@ -135,5 +144,25 @@ export default {
   padding: 20px;
 }
 
+.submit{
+  background-color: #F57F17;
+  padding: 7px;
+  font-weight: 700;
+  border-radius:25px;
+  padding-left: 17px;
+  padding-right: 17px;
+  box-shadow: 0px 1px 1px #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: 0.5s;
+}
 
+.submit:hover{
+  background-color: #fc8b28;
+  transition: 0.5s;
+}
+
+.submit:active{
+  background-color: #faa963;
+  transition: 0.2s;
+}
 </style>

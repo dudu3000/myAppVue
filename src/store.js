@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     token: 'undefined',
     page: 'home',
+    errorCode: 0
   },
   mutations: {
     addToken (state, token){
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     goToPage (state, page){
       return state.page = page;
+    },
+    updateErrorCode (state, code){
+      return state.errorCode = code;
     }
   },
   actions: {
@@ -32,6 +36,9 @@ export default new Vuex.Store({
     },
     goToPage (context, page){
       context.commit('goToPage', page);
+    },
+    updateErrorCode (context, code){
+      context.commit('updateErrorCode', code);
     }
   },
   getters: {
