@@ -15,16 +15,19 @@
             >
               <h1>Home</h1>
                 <b>Welcome</b><br>
+                <!--Check if the user is logged in. If it is not, display only the following texxt. If it is logged in, display the posts-->
                 <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
           
                 <div v-if="$store.state.token !== 'undefined'">
-                  
+                  <!--Execute a request to back-end server when the page is loaded first time.-->
                   <div v-if="firstCall == 0">
                     {{ getPosts() }}
                   </div>
+                  <!--Display the buttons for next page and prev page if they exist-->
                   <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsPrevPage()" v-if="prevPage !== ''">Previous page</v-btn>
                   <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsNextPage()" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
   
+                  <!--Button used to jump to post page-->
                   <v-btn
                     target="_blank"
                     class="right"
@@ -36,29 +39,108 @@
                     Make a post
                   </v-btn>
 
+                  <!--Here starts the isplay of the posts and implemented dialog boxes.-->
                   <div class="flex">
+
+                    <!--"For" used to display 6 posts. Files variable stores the files from HTTP response.-->
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
-                      <div class="flexitem">
-                      <div class="title">
-                        <h3>{{ posts[file.index].title }}</h3>
-                      </div>
-                      <div class="description">
-                        <div v-if="posts[file.index].description.length > 15" style="display: inline-flex;">
-                          <h4 v-for="index in 14" :key="index">
-                            {{ posts[file.index].description[index-1] }}
-                            <div v-if="posts[file.index].description[index-1] == ' '"><pre> </pre></div>
-                          </h4>
-                          <h4>...</h4>
-                        </div>
-                        <div v-if="posts[file.index].description.length <= 15">
-                            <h4>{{ posts[file.index].description }}</h4>
-                        </div>
-                        <div v-if="posts[file.index].description == ''">
-                          <pre> </pre>
-                        </div>
-                      </div>
-                      <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
-                      </div>
+
+
+
+
+                      <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
+                      <v-dialog
+                        v-model="dialog[file.index]"
+                        height="auto"
+                        max-width="800"
+                      >
+
+                        <!--Here starts the activator for the dialog box. The activator si the entire post.-->
+                        <template v-slot:activator="{ on, attrs }">
+
+
+
+
+                          <!--The following is the entire flex item described by the css from App.vue-->
+                          <div class="flexitem"
+                                v-bind="attrs"
+                                v-on="on">
+                          <div class="title">
+                            <!--Display the title for each post in this "for"-->
+                            <h3>{{ posts[file.index].title }}</h3>
+                          </div>
+                          <div class="description">
+                            <!--The following logic checks if the description is longer than 15 characters. If it is, si displayes only 10 characters and add "..."-->
+                            <div v-if="posts[file.index].description.length > 15" style="display: inline-flex;">
+                              <h4 v-for="index in 14" :key="index">
+                                {{ posts[file.index].description[index-1] }}
+                                <!--If the descripton is empty, display an empty space so the row of the description to be displayed.-->
+                                <div v-if="posts[file.index].description[index-1] == ' '"><pre> </pre></div>
+                              </h4>
+                              <h4>...</h4>
+                            </div>
+                            <div v-if="posts[file.index].description.length <= 15">
+                                <h4>{{ posts[file.index].description }}</h4>
+                            </div>
+                            <div v-if="posts[file.index].description == ''">
+                              <pre> </pre>
+                            </div>
+                          </div>
+                          <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="image">
+                          </div>
+
+
+
+
+                        </template>
+                        <!--Here starts the content of the dialog box. The following is the header of the dialog box displaying the title.-->
+                        <div></div>
+                        <v-card
+                        >
+                
+                          <v-card-title class="headline red lighten-2" color="red accent-4">
+                            {{ posts[file.index].title }}
+                          </v-card-title>
+
+
+
+
+                          <!--Display the entire description.-->
+                          <v-card-text>
+                           {{ posts[file.index].description }}
+                          </v-card-text>
+
+
+
+
+                          <!--Display the entire image.-->
+                          <v-divider></v-divider><br>
+                          <v-card-text class=text-center>
+                            
+                            <img :src="require('./../../../myappGit/db/photos/' + `${file.name}` + '.jpg')" class="imageDialog">
+                          </v-card-text>
+
+
+                          <v-divider></v-divider>
+                          <v-card-text class=text-center>
+                            <br>
+                            <v-btn
+                              target="_blank"
+                              class="right"
+                              color="red accent-4"
+                              dark
+                              rounded
+                              v-on:click="DeletePost(files[file.index].id)"
+                            >
+                              Delete this post
+                            </v-btn>
+                            <br>
+                            <br>
+                          </v-card-text>
+
+                          
+                        </v-card>
+                      </v-dialog>
                     </div>
                   </div>
                 </div><br>
@@ -80,6 +162,7 @@ export default {
   data(){
       return {
         page: 1,
+        dialog: [6],
         posts: [],
         prevPage: '',
         nextPage: '',
@@ -92,6 +175,12 @@ export default {
   },
   methods:{
     getPosts: function(){
+      this.dialog[0] = false;
+      this.dialog[1] = false;
+      this.dialog[2] = false;
+      this.dialog[3] = false;
+      this.dialog[4] = false;
+      this.dialog[5] = false;
       this.firstCall = 1;
       this.axios({
         method: 'get',
@@ -211,6 +300,11 @@ export default {
 
     Post: function(){
       this.$store.dispatch('goToPage', 'post');
+    },
+
+    DeletePost: function(id){
+      this.$store.dispatch('updateIdPostToBeDeleted', id);
+      this.$store.dispatch('goToPage', 'delete')
     }
   }
 }

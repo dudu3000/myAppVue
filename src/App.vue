@@ -87,6 +87,7 @@
       <Register v-if="$store.state.page == 'register'"></Register>
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
       <Post v-if="$store.state.page == 'post'"></Post>
+      <Delete v-if="$store.state.page == 'delete'"></Delete>
     </v-main>
   </v-app>
 </template>
@@ -98,6 +99,7 @@ import Logout from './components/Logout';
 import Register from './components/Register';
 import OtherUser from './components/OtherUser';
 import Post from './components/Post';
+import Delete from './components/Delete';
 
 export default {
   name: 'App',
@@ -108,7 +110,8 @@ export default {
     Logout,
     Register,
     OtherUser,
-    Post
+    Post,
+    Delete
   },
 
   data: () => ({
@@ -183,5 +186,12 @@ export default {
 }
 .description{
   width: 200px;
+}
+
+.imageDialog{
+  width: auto;
+  height:auto;
+  max-width:750px;
+  max-height: 500px;
 }
 </style>
