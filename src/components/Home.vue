@@ -46,8 +46,8 @@
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
 
 
-                      <div v-if="executeOnce <= files.length">{{getEachFile(posts[file.index].id)}}</div>
-
+                      <div v-if="executeOnce <= 1">{{getEachFile(posts[file.index].id)}}</div>
+    
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
                       <v-dialog
                         v-model="dialog[file.index]"
@@ -86,7 +86,6 @@
                               <pre> </pre>
                             </div>
                           </div>
-                          <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData[posts[file.index].id])" class="image" />
                           </div>
 
 
@@ -116,7 +115,6 @@
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
                           <v-card-text class=text-center>
-                            <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData[posts[file.index].id])" />
                           </v-card-text>
 
                           
@@ -185,6 +183,9 @@ export default {
       }
   },
   methods:{
+    setPostId: function(id){
+      this.postId = id
+    },
     getEachFile: function(id){
       this.executeOnce++;
       this.axios({
