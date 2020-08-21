@@ -194,4 +194,14 @@ export default {
   max-width:750px;
   max-height: 500px;
 }
+
+.logo{
+  max-width:40px;
+  height: auto;
+}
+
+.logoFlex{
+  display: flex;
+  flex-direction: column;;
+}
 </style>

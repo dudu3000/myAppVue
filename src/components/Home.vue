@@ -46,8 +46,7 @@
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
 
 
-                      <div v-if="executeOnce == 1">{{getEachFile(posts[file.index].id)}}</div>
-
+                      <div v-if="executeOnce <= files.length">{{getEachFile(posts[file.index].id)}}</div>
 
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
                       <v-dialog
@@ -87,7 +86,7 @@
                               <pre> </pre>
                             </div>
                           </div>
-                          <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData)" class="image" />
+                          <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData[posts[file.index].id])" class="image" />
                           </div>
 
 
@@ -117,7 +116,17 @@
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
                           <v-card-text class=text-center>
-                            <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData)" />
+                            <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData[posts[file.index].id])" />
+                          </v-card-text>
+
+                          
+                          <!--Display the entire image.-->
+                          <v-divider></v-divider><br>
+                          <v-card-text>
+                           <div>Estimated age: {{ (posts[file.index].faceDetection.AgeRange.Low + posts[file.index].faceDetection.AgeRange.High)/2 }}</div>
+                           <div>Mood: {{ posts[file.index].faceDetection.Emotions[0].Type }}</div>
+                           <div v-if="posts[file.index].faceDetection.Beard.Value"><img src="../assets/beard.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Eyeglasses.Value"><img src="../assets/eyeglasses.png" class="logo"></div>
                           </v-card-text>
 
 
@@ -170,14 +179,14 @@ export default {
         files: [],
         postId: 0,
         postTitle: '',
-        filesData: '',
-        executeOnce: 1,
+        filesData: [],
+        executeOnce: 0,
         axios: require('axios').default,
       }
   },
   methods:{
     getEachFile: function(id){
-      this.executeOnce = 0;
+      this.executeOnce++;
       this.axios({
         method: 'get',
         url: 'http://localhost:3000/post/' + id,
@@ -186,7 +195,7 @@ export default {
         }
       }).then((response) => {
         var bytes = response.data.data.data;
-        this.filesData = new Uint8Array(bytes);
+        this.filesData[id] = new Uint8Array(bytes);
       })
     },
     getPosts: function(){
@@ -360,4 +369,4 @@ export default {
 
 
 <style>
-</style>
+</style
