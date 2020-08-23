@@ -46,7 +46,7 @@
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
 
 
-                      <div v-if="executeOnce <= 1">{{getEachFile(posts[file.index].id)}}</div>
+                      <div v-if="executeOnce <= files.length">{{getEachFile(posts[file.index].id)}}</div>
     
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
                       <v-dialog
