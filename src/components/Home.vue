@@ -86,8 +86,11 @@
                               <pre> </pre>
                             </div>
                           </div>
+                            <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData)" class="image" />
+                            {{ console(posts[file.index].id) }}
+                          {{ console(filesData[posts[file.index].id]) }}
+                          <!--TODO Create a function that store the id and display image using it-->
                           </div>
-
 
 
 
@@ -176,6 +179,7 @@ export default {
         firstCall: 0,
         files: [],
         postId: 0,
+        test: 3,
         postTitle: '',
         filesData: [],
         executeOnce: 0,
@@ -183,6 +187,9 @@ export default {
       }
   },
   methods:{
+    console: function(test){
+      console.log(test);
+    },
     setPostId: function(id){
       this.postId = id
     },
