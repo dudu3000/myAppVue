@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <main v-on:click="getPosts()">
+    <main>
       <v-container>
         <v-col cols="12">
           <v-row>
@@ -42,25 +42,20 @@
                   <!--Here starts the isplay of the posts and implemented dialog boxes.-->
                   <div class="flex">
 
+
+
+
                     <!--"For" used to display 6 posts. Files variable stores the files from HTTP response.-->
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
-
-
-                      <div v-if="executeOnce <= files.length">{{getEachFile(posts[file.index].id)}}</div>
-    
+                      <div v-if="postsIncrement <= files.length">{{getEachFile(posts[file.index].id)}}</div>
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
                       <v-dialog
                         v-model="dialog[file.index]"
                         height="auto"
                         max-width="800"
                       >
-
                         <!--Here starts the activator for the dialog box. The activator si the entire post.-->
                         <template v-slot:activator="{ on, attrs }">
-
-
-
-
                           <!--The following is the entire flex item described by the css from App.vue-->
                           <div class="flexitem"
                                 v-bind="attrs"
@@ -80,47 +75,30 @@
                               <h4>...</h4>
                             </div>
                             <div v-if="posts[file.index].description.length <= 15">
-                                <h4>{{ posts[file.index].description }}</h4>
+                              <h4>{{ posts[file.index].description }}</h4>
                             </div>
                             <div v-if="posts[file.index].description == ''">
                               <pre> </pre>
                             </div>
                           </div>
-                            <img v-bind:src="'data:image/jpg;base64,'+ encode(filesData)" class="image" />
-                            {{ console(posts[file.index].id) }}
-                          {{ console(filesData[posts[file.index].id]) }}
-                          <!--TODO Create a function that store the id and display image using it-->
+                            <img v-if="!inProgres" v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="image" />
+                            <!--TODO Create a function that store the id and display image using it-->
                           </div>
-
-
-
                         </template>
                         <!--Here starts the content of the dialog box. The following is the header of the dialog box displaying the title.-->
                         <div></div>
-                        <v-card
-                        >
-                
+                        <v-card>
                           <v-card-title class="headline red lighten-2" color="red accent-4">
                             {{ posts[file.index].title }}
                           </v-card-title>
-
-
-
-
                           <!--Display the entire description.-->
                           <v-card-text>
                            {{ posts[file.index].description }}
                           </v-card-text>
-
-
-
-
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
                           <v-card-text class=text-center>
                           </v-card-text>
-
-                          
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
                           <v-card-text>
@@ -147,8 +125,6 @@
                             <br>
                             <br>
                           </v-card-text>
-
-                          
                         </v-card>
                       </v-dialog>
                     </div>
@@ -173,16 +149,15 @@ export default {
       return {
         page: 1,
         dialog: [6],
+        firstCall: 0,
         posts: [],
+        files: [],
+        filesData: [],
         prevPage: '',
         nextPage: '',
-        firstCall: 0,
-        files: [],
         postId: 0,
-        test: 3,
-        postTitle: '',
-        filesData: [],
-        executeOnce: 0,
+        postsIncrement: 0,
+        inProgres: true,
         axios: require('axios').default,
       }
   },
@@ -190,11 +165,11 @@ export default {
     console: function(test){
       console.log(test);
     },
-    setPostId: function(id){
-      this.postId = id
+    setInProgresToTrue: function(){
+      this.inProgres = true;
     },
     getEachFile: function(id){
-      this.executeOnce++;
+      this.postsIncrement++;
       this.axios({
         method: 'get',
         url: 'http://localhost:3000/post/' + id,
@@ -202,12 +177,17 @@ export default {
           'authorization': this.$store.state.token
         }
       }).then((response) => {
-        var bytes = response.data.data.data;
-        this.filesData[id] = new Uint8Array(bytes);
+        new Promise((resolve) => {
+          var bytes = response.data.data.data;
+          
+          resolve(this.filesData[id] = new Uint8Array(bytes));
+          resolve(this.filesData[id] = this.encode(this.filesData[id]));
+        });
+        this.inProgres = false;
       })
     },
     getPosts: function(){
-      this.executeOnce = 1;
+      this.postsIncrement = 0;
       this.dialog[0] = false;
       this.dialog[1] = false;
       this.dialog[2] = false;
@@ -253,7 +233,7 @@ export default {
     },
 
     getPostsNextPage: function(){
-      this.executeOnce = 1;
+      this.postsIncrement = 0;
       this.page += 1;
       this.axios({
         method: 'get',
@@ -294,7 +274,7 @@ export default {
 
     
     getPostsPrevPage: function(){
-      this.executeOnce = 1;
+      this.postsIncrement = 0;
       this.page -= 1;
       this.axios({
         method: 'get',
