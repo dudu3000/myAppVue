@@ -24,8 +24,8 @@
                     {{ getPosts() }}
                   </div>
                   <!--Display the buttons for next page and prev page if they exist-->
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsPrevPage()" v-if="prevPage !== ''">Previous page</v-btn>
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPostsNextPage()" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
+                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(true, false)" v-if="prevPage !== ''">Previous page</v-btn>
+                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
   
                   <!--Button used to jump to post page-->
                   <v-btn
@@ -47,7 +47,8 @@
 
                     <!--"For" used to display 6 posts. Files variable stores the files from HTTP response.-->
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
-                      <div v-if="postsIncrement <= files.length">{{getEachFile(posts[file.index].id)}}</div>
+                      <div v-if="postId[getPostIdIncrement-1] !== posts[file.index].id & getPostIdIncrement < 6">{{ getPostId(posts[file.index].id) }}</div>
+                      <div v-if="postsIncrement < files.length & executeGetEachFileOnce == 1">{{getEachFile(postId[postsIncrement])}}</div>
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
                       <v-dialog
                         v-model="dialog[file.index]"
@@ -81,7 +82,7 @@
                               <pre> </pre>
                             </div>
                           </div>
-                            <img v-if="!inProgres" v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="image" />
+                            <img v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="image" />
                             <!--TODO Create a function that store the id and display image using it-->
                           </div>
                         </template>
@@ -98,15 +99,30 @@
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
                           <v-card-text class=text-center>
+                            <img v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="imageDialog" />
                           </v-card-text>
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
+
+
+
+
                           <v-card-text>
                            <div>Estimated age: {{ (posts[file.index].faceDetection.AgeRange.Low + posts[file.index].faceDetection.AgeRange.High)/2 }}</div>
                            <div>Mood: {{ posts[file.index].faceDetection.Emotions[0].Type }}</div>
                            <div v-if="posts[file.index].faceDetection.Beard.Value"><img src="../assets/beard.png" class="logo"></div>
                            <div v-if="posts[file.index].faceDetection.Eyeglasses.Value"><img src="../assets/eyeglasses.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Sunglasses.Value"><img src="../assets/sunglasses.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Gender.Value == 'Male'"><img src="../assets/man.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Gender.Value == 'Female'"><img src="../assets/female.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Emotions[0].Confidence > 70"><img src="../assets/smile.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Emotions[0].Confidence > 30 && posts[file.index].faceDetection.Emotions[0].Confidence <= 70"><img src="../assets/neutralFace.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Emotions[0].Confidence <= 30"><img src="../assets/sad.png" class="logo"></div>
+
                           </v-card-text>
+
+
+
 
 
                           <v-divider></v-divider>
@@ -118,7 +134,7 @@
                               color="red accent-4"
                               dark
                               rounded
-                              v-on:click="DeletePost(files[file.index].id)"
+                              v-on:click="DeletePost(posts[file.index].id)"
                             >
                               Delete this post
                             </v-btn>
@@ -143,21 +159,24 @@
 
 
 <script>
+import Vue from 'vue'
 export default { 
   name: 'home',
   data(){
       return {
         page: 1,
-        dialog: [6],
+        dialog: [],
         firstCall: 0,
         posts: [],
         files: [],
         filesData: [],
         prevPage: '',
         nextPage: '',
-        postId: 0,
+        postId: [0],
         postsIncrement: 0,
-        inProgres: true,
+        inProgres: -1,
+        getPostIdIncrement: 0,
+        executeGetEachFileOnce: 1,
         axios: require('axios').default,
       }
   },
@@ -165,10 +184,13 @@ export default {
     console: function(test){
       console.log(test);
     },
-    setInProgresToTrue: function(){
-      this.inProgres = true;
+    getPostId: function(id){
+      this.postId[this.getPostIdIncrement] = id;
+      this.getPostIdIncrement++;
     },
     getEachFile: function(id){
+      this.executeGetEachFileOnce = 0;
+      this.inProgres = this.postId[this.postsIncrement]
       this.postsIncrement++;
       this.axios({
         method: 'get',
@@ -177,24 +199,33 @@ export default {
           'authorization': this.$store.state.token
         }
       }).then((response) => {
-        new Promise((resolve) => {
           var bytes = response.data.data.data;
           
-          resolve(this.filesData[id] = new Uint8Array(bytes));
-          resolve(this.filesData[id] = this.encode(this.filesData[id]));
-        });
-        this.inProgres = false;
+          this.filesData[id] = new Uint8Array(bytes);
+          Vue.set(this.filesData, id, this.encode(this.filesData[id]));
       })
     },
-    getPosts: function(){
+    getPosts: function(prev = false, next = false){
+      //Reset used variables.
+      this.getPostIdIncrement = 0;
       this.postsIncrement = 0;
-      this.dialog[0] = false;
-      this.dialog[1] = false;
-      this.dialog[2] = false;
-      this.dialog[3] = false;
-      this.dialog[4] = false;
-      this.dialog[5] = false;
+      this.files = [];
+      this.posts = [];
       this.firstCall = 1;
+
+      //Set dialog boxes to false(everytime the function is called)
+      for(var i = 0; i < 6; i++)
+        this.dialog[i] = false;
+
+      //Check if the function is called from one of the next/prev page button
+      if(prev){
+        this.page--;
+      }
+      if(next){
+        this.page++;
+      }
+
+      //Send request for users information from token
       this.axios({
         method: 'get',
         url: 'http://localhost:3000/user/info',
@@ -202,6 +233,7 @@ export default {
           'authorization': this.$store.state.token
         }
       }).then((response)=>{
+        //Send request to get posts
         this.axios({
           method: 'post',
           url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
@@ -230,87 +262,6 @@ export default {
         });
       })
       
-    },
-
-    getPostsNextPage: function(){
-      this.postsIncrement = 0;
-      this.page += 1;
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:3000/user/info',
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response)=>{
-        this.axios({
-          method: 'post',
-          url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
-          headers:{
-            'authorization': this.$store.state.token
-          },
-          data:{
-            userName: response.data.userName
-          }
-        }).then((response) => {
-          this.posts = response.data.posts.results;
-          this.files = response.data.files.results;
-          if(response.data.posts.next !== undefined)
-            this.nextPage = response.data.posts.next;
-          else
-            this.nextPage = '';
-          if(response.data.posts.previous !== undefined)
-            this.prevPage = response.data.posts.previous;
-          else
-            this.prevPage = '';
-        }, 
-        (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
-          console.log(error);
-          this.validReturn = null;
-        });
-      })
-
-    },
-
-    
-    getPostsPrevPage: function(){
-      this.postsIncrement = 0;
-      this.page -= 1;
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:3000/user/info',
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response)=>{
-        this.axios({
-          method: 'post',
-          url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
-          headers:{
-            'authorization': this.$store.state.token
-          },
-          data:{
-            userName: response.data.userName
-          }
-        }).then((response) => {
-          this.posts = response.data.posts.results;
-          this.files = response.data.files.results;
-          if(response.data.posts.next !== undefined)
-            this.nextPage = response.data.posts.next;
-          else
-            this.nextPage = '';
-          if(response.data.posts.previous !== undefined)
-            this.prevPage = response.data.posts.previous;
-          else
-            this.prevPage = '';
-        }, 
-        (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
-          console.log(error);
-          this.validReturn = null;
-        });
-      })
-
     },
 
     Post: function(){
@@ -347,6 +298,7 @@ export default {
           output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
                     keyStr.charAt(enc3) + keyStr.charAt(enc4);
       }
+      this.executeGetEachFileOnce = 1;
       return output;
     }
   }
