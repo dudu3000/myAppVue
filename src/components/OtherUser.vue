@@ -175,7 +175,7 @@ export default {
         }
       }).then((response) => {
           var bytes = response.data.data.data;
-          
+          this.executeGetEachFileOnce = 1;
           this.filesData[id] = new Uint8Array(bytes);
           Vue.set(this.filesData, id, this.encode(this.filesData[id]));
       })
@@ -254,7 +254,6 @@ export default {
           output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
                     keyStr.charAt(enc3) + keyStr.charAt(enc4);
       }
-      this.executeGetEachFileOnce = 1;
       return output;
     }
   }

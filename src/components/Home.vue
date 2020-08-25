@@ -47,9 +47,20 @@
 
                     <!--"For" used to display 6 posts. Files variable stores the files from HTTP response.-->
                     <div v-for="file in files" :key="file.name" style="width: 30%; height: auto;">
+
+
+
                       <div v-if="postId[getPostIdIncrement-1] !== posts[file.index].id & getPostIdIncrement < 6">{{ getPostId(posts[file.index].id) }}</div>
+
+
+
+
                       <div v-if="postsIncrement < files.length & executeGetEachFileOnce == 1">{{getEachFile(postId[postsIncrement])}}</div>
                       <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
+
+
+
+
                       <v-dialog
                         v-model="dialog[file.index]"
                         height="auto"
@@ -83,7 +94,6 @@
                             </div>
                           </div>
                             <img v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="image" />
-                            <!--TODO Create a function that store the id and display image using it-->
                           </div>
                         </template>
                         <!--Here starts the content of the dialog box. The following is the header of the dialog box displaying the title.-->
@@ -111,7 +121,7 @@
                            <div>Estimated age: {{ (posts[file.index].faceDetection.AgeRange.Low + posts[file.index].faceDetection.AgeRange.High)/2 }}</div>
                            <div>Mood: {{ posts[file.index].faceDetection.Emotions[0].Type }}</div>
                            <div v-if="posts[file.index].faceDetection.Beard.Value"><img src="../assets/beard.png" class="logo"></div>
-                           <div v-if="posts[file.index].faceDetection.Eyeglasses.Value"><img src="../assets/eyeglasses.png" class="logo"></div>
+                           <div v-if="posts[file.index].faceDetection.Eyeglasses.Value & !posts[file.index].faceDetection.Sunglasses.Value"><img src="../assets/eyeglasses.png" class="logo"></div>
                            <div v-if="posts[file.index].faceDetection.Sunglasses.Value"><img src="../assets/sunglasses.png" class="logo"></div>
                            <div v-if="posts[file.index].faceDetection.Gender.Value == 'Male'"><img src="../assets/man.png" class="logo"></div>
                            <div v-if="posts[file.index].faceDetection.Gender.Value == 'Female'"><img src="../assets/female.png" class="logo"></div>
@@ -189,6 +199,7 @@ export default {
       this.getPostIdIncrement++;
     },
     getEachFile: function(id){
+        setTimeout(function(){}, 500);
       this.executeGetEachFileOnce = 0;
       this.inProgres = this.postId[this.postsIncrement]
       this.postsIncrement++;
@@ -200,7 +211,7 @@ export default {
         }
       }).then((response) => {
           var bytes = response.data.data.data;
-          
+          this.executeGetEachFileOnce = 1;
           this.filesData[id] = new Uint8Array(bytes);
           Vue.set(this.filesData, id, this.encode(this.filesData[id]));
       })
@@ -298,7 +309,6 @@ export default {
           output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
                     keyStr.charAt(enc3) + keyStr.charAt(enc4);
       }
-      this.executeGetEachFileOnce = 1;
       return output;
     }
   }
