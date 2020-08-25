@@ -61,7 +61,7 @@ export default {
 
     methods: {
         login() {
-            this.axios.post("http://localhost:3000/user/login", {
+            this.axios.post('http://' + this.$store.state.server + ':3000/user/login', {
                 userName: this.username,
                 password: this.password,
                 minutes: 10

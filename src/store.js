@@ -9,6 +9,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    server: 'localhost',
     token: 'undefined',
     page: 'home',
     errorCode: 0,

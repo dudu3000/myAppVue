@@ -119,7 +119,7 @@ export default {
             this.errorReturn = 'You must insert the same password!';
             return;
         }
-        this.axios.post('http://localhost:3000/user', {
+        this.axios.post('http://' + this.$store.state.server + ':3000/user', {
           "firstName": this.firstName,
           "lastName": this.lastName,
           "userName": this.username,

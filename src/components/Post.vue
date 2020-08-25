@@ -101,7 +101,7 @@ export default {
 
         this.axios({
           method: 'post',
-          url: 'http://localhost:3000/post/upload',
+          url: 'http://' + this.$store.state.server + ':3000/post/upload',
           headers:{
             'authorization': this.$store.state.token
           },

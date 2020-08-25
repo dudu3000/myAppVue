@@ -67,7 +67,7 @@ export default {
     deletePost () {
         this.axios({
           method: 'delete',
-          url: 'http://localhost:3000/post',
+          url: 'http://' + this.$store.state.server + ':3000/post',
           headers:{
             'authorization': this.$store.state.token
           },

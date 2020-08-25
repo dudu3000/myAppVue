@@ -205,7 +205,7 @@ export default {
       this.postsIncrement++;
       this.axios({
         method: 'get',
-        url: 'http://localhost:3000/post/' + id,
+        url: 'http://' + this.$store.state.server + ':3000/post/' + id,
         headers:{
           'authorization': this.$store.state.token
         }
@@ -239,7 +239,7 @@ export default {
       //Send request for users information from token
       this.axios({
         method: 'get',
-        url: 'http://localhost:3000/user/info',
+        url: 'http://' + this.$store.state.server + ':3000/user/info',
         headers:{
           'authorization': this.$store.state.token
         }
@@ -247,7 +247,7 @@ export default {
         //Send request to get posts
         this.axios({
           method: 'post',
-          url: 'http://localhost:3000/post?page=' + this.page + '&limit=6',
+          url: 'http://' + this.$store.state.server + ':3000/post?page=' + this.page + '&limit=6',
           headers:{
             'authorization': this.$store.state.token
           },
