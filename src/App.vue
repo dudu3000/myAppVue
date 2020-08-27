@@ -155,7 +155,7 @@ export default {
 
 .image{
   object-fit: cover;
-  border-radius: 30px;
+  border-radius: 20px;
   box-shadow: 15px 15px 10px #000000;
   transition: 0.5s;
   width:500px;
@@ -175,7 +175,7 @@ export default {
   float: right;
 }
 .flexitem{
-  height:200px;
+  height:auto;
 }
 .title{
   font-weight: bold;
@@ -184,6 +184,7 @@ export default {
   border-bottom: 2px solid #ffffff;
   width:80%
 }
+
 .description{
   width: 200px;
 }

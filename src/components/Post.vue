@@ -120,7 +120,7 @@ export default {
             this.file = '';
         }, 
         (error) => {
-          this.errorReturn = error; 
+          this.errorReturn = error.message; 
           this.validReturn = null;
           console.log(error + formData);
           this.title = null;

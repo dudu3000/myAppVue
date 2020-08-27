@@ -14,7 +14,8 @@
             height="1300px"
             >
               <h1>Home</h1>
-                <b>Welcome</b><br>
+                <b v-if="$store.state.token == 'undefined'">Welcome</b><br>
+                <b v-if="$store.state.token !== 'undefined'">Welcome {{userName}}</b><br>
                 <!--Check if the user is logged in. If it is not, display only the following texxt. If it is logged in, display the posts-->
                 <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
           
@@ -71,7 +72,8 @@
                           <!--The following is the entire flex item described by the css from App.vue-->
                           <div class="flexitem"
                                 v-bind="attrs"
-                                v-on="on">
+                                v-on="on"
+                                >
                           <div class="title">
                             <!--Display the title for each post in this "for"-->
                             <h3>{{ posts[file.index].title }}</h3>
@@ -111,6 +113,36 @@
                           <v-card-text class=text-center>
                             <img v-bind:src="'data:image/jpg;base64,'+ filesData[posts[file.index].id]" class="imageDialog" />
                           </v-card-text>
+                          <div style="display: inline-flex; justify-content: space-between; width:100%;">
+                          <v-card-text>
+                            <br>
+                            <v-btn
+                              target="_blank"
+                              class="left"
+                              color="red accent-4"
+                              dark
+                              rounded
+                              v-on:click="prevPhoto(file.index)"
+                              v-if="posts[file.index-1] !== undefined"
+                            >
+                              Previous
+                            </v-btn>
+                          </v-card-text>
+                          <v-card-text>
+                            <br>
+                            <v-btn
+                              target="_blank"
+                              class="right"
+                              color="red accent-4"
+                              dark
+                              rounded
+                              v-on:click="nextPhoto(file.index)"
+                              v-if="posts[file.index+1] !== undefined"
+                            >
+                              Next
+                            </v-btn>
+                          </v-card-text>
+                          </div>
                           <!--Display the entire image.-->
                           <v-divider></v-divider><br>
 
@@ -187,12 +219,21 @@ export default {
         inProgres: -1,
         getPostIdIncrement: 0,
         executeGetEachFileOnce: 1,
+        userName: '',
         axios: require('axios').default,
       }
   },
   methods:{
     console: function(test){
       console.log(test);
+    },
+    nextPhoto: function(id){
+      Vue.set(this.dialog, id, false);
+      Vue.set(this.dialog, id+1, true);
+    },
+    prevPhoto: function(id){
+      Vue.set(this.dialog, id, false);
+      Vue.set(this.dialog, id-1, true);
     },
     getPostId: function(id){
       this.postId[this.getPostIdIncrement] = id;
@@ -244,6 +285,7 @@ export default {
           'authorization': this.$store.state.token
         }
       }).then((response)=>{
+        this.userName = response.data.userName;
         //Send request to get posts
         this.axios({
           method: 'post',
@@ -293,8 +335,8 @@ export default {
 
       while (i < input.length) {
           chr1 = input[i++];
-          chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index 
-          chr3 = i < input.length ? input[i++] : Number.NaN; // checks are needed here
+          chr2 = i < input.length ? input[i++] : Number.NaN;
+          chr3 = i < input.length ? input[i++] : Number.NaN;
 
           enc1 = chr1 >> 2;
           enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
