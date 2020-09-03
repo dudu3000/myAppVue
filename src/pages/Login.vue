@@ -57,8 +57,7 @@ export default {
             token: "undefined",
             axios: require("axios").default
         };
-  },
-
+    },
     methods: {
         login() {
             this.axios.post('http://' + this.$store.state.server + ':3000/user/login', {
