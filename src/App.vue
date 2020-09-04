@@ -93,13 +93,13 @@
 </template>
 
 <script>
-import Home from './components/Home';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import Register from './components/Register';
-import OtherUser from './components/OtherUser';
-import Post from './components/Post';
-import Delete from './components/Delete';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Logout from './pages/Logout';
+import Register from './pages/Register';
+import OtherUser from './pages/OtherUser';
+import Post from './pages/Post';
+import Delete from './pages/Delete';
 
 export default {
   name: 'App',
