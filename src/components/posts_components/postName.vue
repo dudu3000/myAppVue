@@ -1,9 +1,7 @@
 <template>
-    <div v-if="file !== ''">
-        <div class="title">
+    <div class="title">
           <!--Display the title for each post in this "for"-->
-          <h3>{{ posts[file.index].title }}</h3>
-        </div>
+          <h3>{{ postTitle }}</h3>
     </div>
 </template>
 
@@ -16,8 +14,7 @@
         },
         props: 
           [
-            'posts',
-            'file'
+            'postTitle'
           ]
     }
 </script>

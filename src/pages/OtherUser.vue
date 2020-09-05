@@ -33,7 +33,7 @@
 
 <script>
 import Vue from 'vue';
-import userContent from './../components/userContent.vue';
+import userContent from './../components/posts_components/userContent.vue';
 export default { 
   name: 'home',
   data(){

@@ -1,27 +1,27 @@
 <template>
-    <div v-if="file !== ''">
+    <div v-if="post">
         <v-card>
           <v-card-title class="headline red lighten-2" color="red accent-4">
-            {{ postsOfFileIndex.title }}
+            {{ post.title }}
           </v-card-title>
           <!--Display the entire description.-->
           <v-card-text>
-           {{ postsOfFileIndex.description }}
+           {{ post.description }}
           </v-card-text>
           <!--Display the entire image.-->
           <v-divider></v-divider><br>
           <v-card-text class=text-center>
-            <img v-bind:src="'data:image/jpg;base64,'+ filesData[postsOfFileIndex.id]" class="imageDialog" />
+            <img v-bind:src="'data:image/jpg;base64,'+ imageData" class="imageDialog" />
           </v-card-text>
           <!--Display the entire image.-->
           <v-divider></v-divider><br>
 
-            <awsParameters :postFaceDetection = "postsOfFileIndex.faceDetection"/>
+            <awsParameters :postFaceDetection = "post.faceDetection"/>
 
           <v-divider></v-divider>
           <v-card-text class=text-center><br>
 
-            <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-if="$store.state.page == 'home'" v-on:click="DeletePost(postsOfFileIndex.id)"> Delete this post </v-btn><br><br>
+            <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-if="$store.state.page == 'home'" v-on:click="DeletePost(post.id)"> Delete this post </v-btn><br><br>
 
           </v-card-text>
         </v-card>
@@ -30,13 +30,12 @@
 </template>
 
 <script>
-    import awsParameters from './awsParameters.vue';
+    import awsParameters from '@/components/posts_components/awsParameters.vue';
     export default {
         name: 'dialogBox',
         props:[
-            'postsOfFileIndex',
-            'file',
-            'filesData'
+            'post',
+            'imageData'
         ],
         components: {
           awsParameters
