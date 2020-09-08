@@ -1,5 +1,5 @@
 <template>
-    <div v-if="postFaceDetection !== ''">
+    <div v-if="postFaceDetection">
           <v-card-text>
            <div>Estimated age: {{ (postFaceDetection.AgeRange.Low + postFaceDetection.AgeRange.High)/2 }}</div>
            <div>Mood: {{ postFaceDetection.Emotions[0].Type }}</div>

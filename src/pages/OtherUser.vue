@@ -134,7 +134,6 @@ export default {
           while(increment < this.files.length){
             await this.getEachFile(this.posts[increment].id, i);
             increment++;
-            console.log(increment)
           }
           
         }, 
