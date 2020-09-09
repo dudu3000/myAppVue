@@ -6,6 +6,8 @@
           :postDialog="dialog[file.index]"
           :imageData="filesData[posts[file.index].id]"
           :post="posts[file.index]"
+          :similarFilesData="similarFilesData"
+          :index="file.index"
         />
       </div>
     </div>
@@ -22,7 +24,8 @@
             'files',
             'posts',
             'dialog',
-            'filesData'
+            'filesData',
+            'similarFilesData'
         ]
     }
 </script>

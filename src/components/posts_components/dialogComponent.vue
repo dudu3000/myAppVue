@@ -11,7 +11,7 @@
               <img v-bind:src="'data:image/jpg;base64,'+ imageData" class="image" />
             </div>
           </template>
-              <dialogBox :post="post" :imageData="imageData"/>
+              <dialogBox :post="post" :imageData="imageData" :similarFilesData="similarFilesData" :index="index"/>
         </v-dialog>
 
     </div>
@@ -36,7 +36,9 @@
         props: [
             'postDialog',
             'imageData',
-            'post'
+            'post',
+            'similarFilesData',
+            'index'
         ]
     }
 </script>

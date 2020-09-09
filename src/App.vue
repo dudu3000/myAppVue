@@ -205,4 +205,10 @@ export default {
   display: flex;
   flex-direction: column;;
 }
+
+.recomandedImage{
+  object-fit: cover;
+  width:25%;
+  height: 150px;
+}
 </style>

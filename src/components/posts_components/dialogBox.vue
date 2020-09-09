@@ -19,6 +19,10 @@
             <awsParameters :postFaceDetection = "post.faceDetection"/>
 
           <v-divider></v-divider>
+
+            <similarImages :similarFilesData="similarFilesData" :index="index"/>
+
+          <v-divider></v-divider>
           <v-card-text class=text-center><br>
 
             <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-if="$store.state.page == 'home'" v-on:click="DeletePost(post.id)"> Delete this post </v-btn><br><br>
@@ -31,20 +35,26 @@
 
 <script>
     import awsParameters from '@/components/posts_components/awsParameters.vue';
+    import similarImages from '@/components/posts_components/similarImages.vue';
     export default {
         name: 'dialogBox',
         props:[
             'post',
-            'imageData'
+            'imageData',
+            'similarFilesData',
+            'index'
         ],
         components: {
-          awsParameters
+          awsParameters,
+          similarImages
         },
         methods: {
           DeletePost: function(id){
             this.$store.dispatch('updateIdPostToBeDeleted', id);
             this.$store.dispatch('goToPage', 'delete')
           },
+
+          
         }
     }
 </script>

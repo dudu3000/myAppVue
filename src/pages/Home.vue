@@ -23,9 +23,7 @@
                   <!--Button used to jump to post page-->
                   <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-on:click="Post()"> Make a post </v-btn>
 
-                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
-
-                
+                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData" :similarFilesData= "similarFilesData"/>
                 </div><br>
           </v-card>
           </v-row>
@@ -52,6 +50,7 @@ export default {
         posts: [],
         files: [],
         filesData: [],
+        similarFilesData: [],
         prevPage: '',
         nextPage: '',
         axios: require('axios').default,
@@ -69,20 +68,43 @@ export default {
 
 
 
-    getEachFile: async function(id){
+    getEachFile: async function(id, increment){
       await this.axios({
         method: 'get',
         url: 'http://' + this.$store.state.server + ':3000/post/' + id,
         headers:{
           'authorization': this.$store.state.token
         }
-      }).then((response) => {
-          var bytes = response.data.data.data;
-          Vue.set(this.filesData, id, this.encode(new Uint8Array(bytes)));
+      }).then(async(response) => {
+          await this.getSimilarPosts(id, increment)
+          var bytes = response.data.data;
+          Vue.set(this.filesData, id, bytes);
       })
     },
 
 
+    getSimilarPosts: async function(id, increment){
+      var indexOfSimilarPosts = increment
+      await this.axios({
+        method: 'get',
+        url: 'http://' + this.$store.state.server + ':3000/post/face/' + id,
+        headers:{
+          'authorization': this.$store.state.token
+        }
+      }).then((response) => {
+        var data = response.data.data;
+        var index = indexOfSimilarPosts;
+        var startOfIncrement = index*data.length
+        var endOfIncrement = (index+1)*data.length
+        var incrementUsedToTrackFiles = 0;
+        for( var increment = startOfIncrement; increment < endOfIncrement; increment++){
+          console.log(data[incrementUsedToTrackFiles].percentage)
+          var bytes = data[incrementUsedToTrackFiles].data;
+          Vue.set(this.similarFilesData, increment, bytes);
+          incrementUsedToTrackFiles++;
+        }
+      })
+    },
 
 
 
@@ -146,7 +168,7 @@ export default {
 
           var increment = 0;
           while(increment < this.files.length){
-            await this.getEachFile(this.posts[increment].id, i);
+            await this.getEachFile(this.posts[increment].id, increment);
             increment++;
           }
           
@@ -170,38 +192,6 @@ export default {
       this.$store.dispatch('goToPage', 'post');
     },
 
-
-
-
-
-
-
-    encode: function(input) {
-      var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-      var output = "";
-      var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-      var i = 0;
-
-      while (i < input.length) {
-          chr1 = input[i++];
-          chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index 
-          chr3 = i < input.length ? input[i++] : Number.NaN; // checks are needed here
-
-          enc1 = chr1 >> 2;
-          enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-          enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-          enc4 = chr3 & 63;
-
-          if (isNaN(chr2)) {
-              enc3 = enc4 = 64;
-          } else if (isNaN(chr3)) {
-              enc4 = 64;
-          }
-          output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
-                    keyStr.charAt(enc3) + keyStr.charAt(enc4);
-      }
-      return output;
-    }
   }
 }
 </script>
