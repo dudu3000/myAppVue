@@ -23,7 +23,7 @@
                   <!--Button used to jump to post page-->
                   <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-on:click="Post()"> Make a post </v-btn>
 
-                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData" :similarFilesData= "similarFilesData"/>
+                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
                 </div><br>
           </v-card>
           </v-row>
@@ -50,7 +50,6 @@ export default {
         posts: [],
         files: [],
         filesData: [],
-        similarFilesData: [],
         prevPage: '',
         nextPage: '',
         axios: require('axios').default,
@@ -68,7 +67,7 @@ export default {
 
 
 
-    getEachFile: async function(id, increment){
+    getEachFile: async function(id){
       await this.axios({
         method: 'get',
         url: 'http://' + this.$store.state.server + ':3000/post/' + id,
@@ -76,35 +75,11 @@ export default {
           'authorization': this.$store.state.token
         }
       }).then(async(response) => {
-          await this.getSimilarPosts(id, increment)
           var bytes = response.data.data;
           Vue.set(this.filesData, id, bytes);
       })
     },
 
-
-    getSimilarPosts: async function(id, increment){
-      var indexOfSimilarPosts = increment
-      await this.axios({
-        method: 'get',
-        url: 'http://' + this.$store.state.server + ':3000/post/face/' + id,
-        headers:{
-          'authorization': this.$store.state.token
-        }
-      }).then((response) => {
-        var data = response.data.data;
-        var index = indexOfSimilarPosts;
-        var startOfIncrement = index*data.length
-        var endOfIncrement = (index+1)*data.length
-        var incrementUsedToTrackFiles = 0;
-        for( var increment = startOfIncrement; increment < endOfIncrement; increment++){
-          console.log(data[incrementUsedToTrackFiles].percentage)
-          var bytes = data[incrementUsedToTrackFiles].data;
-          Vue.set(this.similarFilesData, increment, bytes);
-          incrementUsedToTrackFiles++;
-        }
-      })
-    },
 
 
 
@@ -168,7 +143,7 @@ export default {
 
           var increment = 0;
           while(increment < this.files.length){
-            await this.getEachFile(this.posts[increment].id, increment);
+            await this.getEachFile(this.posts[increment].id);
             increment++;
           }
           

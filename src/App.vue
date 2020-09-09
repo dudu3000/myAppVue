@@ -208,7 +208,10 @@ export default {
 
 .recomandedImage{
   object-fit: cover;
-  width:25%;
+  width:100%;
   height: 150px;
 }
+
+
+
 </style>

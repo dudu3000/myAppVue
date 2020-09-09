@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <img v-bind:src="'data:image/jpg;base64,'+ similarFilesData[index*4 + 0]" class="recomandedImage" />
-        <img v-bind:src="'data:image/jpg;base64,'+ similarFilesData[index*4 + 1]" class="recomandedImage" />
-        <img v-bind:src="'data:image/jpg;base64,'+ similarFilesData[index*4 + 2]" class="recomandedImage" />
-        <img v-bind:src="'data:image/jpg;base64,'+ similarFilesData[index*4 + 3]" class="recomandedImage" />
-        {{index}}
+    <div style="display: inline-flex;">
+        <div v-for="img in similarFilesData" :key="img" style="width: 25%;">
+            <img v-bind:src="'data:image/jpg;base64,'+ img" class="recomandedImage"/>
+        </div>
     </div>
 </template>
 
@@ -13,7 +11,7 @@
         name: 'similarImages',
         props: [
             'similarFilesData',
-            'index'
+            'nrOfRecommendend'
         ],
         data(){
             return {
