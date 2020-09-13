@@ -7,6 +7,14 @@
             <v-card width="100%" class="ma-3 pa-6 red accent-2" dark outlined centered justify="center" height="1300px">
               <h1>Search</h1>
                 <b>Welcome</b><br>
+                
+                  <v-alert
+                      color="#C51162"
+                      dark
+                      icon="mdi-material-design"
+                      border="right"
+                      v-if="errorReturn !== null"
+                  >{{errorReturn}}</v-alert>
                 <div v-if="$store.state.token !== 'undefined'">
 
                 <v-text-field label="Search" required placeholder="Username" v-model="userName" @keypress="getPosts(false, false)"></v-text-field>
@@ -47,6 +55,7 @@ export default {
         prevPage: '',
         nextPage: '',
         userName: '',
+        errorReturn: null,
         axios: require('axios').default,
       }
   },
@@ -111,20 +120,21 @@ export default {
             userName: this.userName
           }
         }).then(async (response) => {
-          this.posts = response.data.posts.results;
-          this.files = response.data.files.results;
+          this.errorReturn = null;
+          this.posts = response.data.result.posts.results;
+          this.files = response.data.result.files.results;
 
 
 
-          if(response.data.posts.next !== undefined)
-            this.nextPage = response.data.posts.next;
+          if(response.data.result.posts.next !== undefined)
+            this.nextPage = response.data.result.posts.next;
           else
             this.nextPage = '';
 
 
 
-          if(response.data.posts.previous !== undefined)
-            this.prevPage = response.data.posts.previous;
+          if(response.data.result.posts.previous !== undefined)
+            this.prevPage = response.data.result.posts.previous;
           else
             this.prevPage = '';
 
@@ -132,15 +142,21 @@ export default {
 
           var increment = 0;
           while(increment < this.files.length){
-            await this.getEachFile(this.posts[increment].id, i);
+            await this.getEachFile(this.posts[increment].id);
             increment++;
           }
-          
-        }, 
-        (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
-          console.log(error);
-          this.validReturn = null;
+
+          this.$store.dispatch("addToken", response.data.token);
+        }).catch((error)=>{
+          if(error.response.status == 401){
+            this.$store.dispatch("addToken", 'undefined');
+            this.$forceUpdate();
+            this.errorReturn = 'Your token has expired! Please go login again!';
+            console.log(error.response.status + ': Your token has expired!');
+          }else if(error.response.status == 404){
+            this.errorReturn = 'User not found!';
+            console.log(error.response.status + ': User not found!');
+          }
         });
       
     },

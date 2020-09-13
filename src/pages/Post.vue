@@ -89,7 +89,7 @@ export default {
       errorReturn: null,
       title: null,
       description: '',
-      file: "",
+      file: [],
       axios: require('axios').default,
     }
   },
@@ -118,14 +118,16 @@ export default {
             this.title = null;
             this.description = '';
             this.file = '';
-        }, 
-        (error) => {
-          this.errorReturn = error.message; 
+            this.$store.dispatch("addToken", res.data.token);
+        }).catch((error)=>{
+          this.errorReturn = error.response.message;
+          console.log(error.response.status + ': ' + error.response.message) 
           this.validReturn = null;
-          console.log(error + formData);
           this.title = null;
           this.description = '';
           this.file = '';
+          this.$store.dispatch("addToken", 'undefined');
+          this.$forceUpdate();
         });
       
 

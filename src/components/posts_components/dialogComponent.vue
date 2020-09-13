@@ -34,6 +34,7 @@
                 dialog: this.postsDialog,
                 similarFilesData: [],
                 nrOfRecommendend: 0,
+                errorReturn: null,
                 axios: require('axios').default,
             }
         },
@@ -57,6 +58,12 @@
                   var bytes = data[increment].data;
                   Vue.set(this.similarFilesData, increment, bytes);
                 }
+                this.$store.dispatch("addToken", response.data.token);
+              }).catch((error)=>{
+                console.log(error.response.status + ': ' + error.response.statusText);
+                this.$store.dispatch("addToken", 'undefined');
+                this.$forceUpdate();
+                this.errorReturn = 'You have been logged out! Please go login again!';
               })
             },
         }

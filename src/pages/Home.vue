@@ -7,6 +7,14 @@
             <v-card width="100%" class="ma-3 pa-6 red accent-2" dark outlined centered justify="center" height="1300px">
               <h1>Home</h1>
                 <b>Welcome</b><br>
+                
+                  <v-alert
+                      color="#C51162"
+                      dark
+                      icon="mdi-material-design"
+                      border="right"
+                      v-if="errorReturn !== null"
+                  >{{errorReturn}}</v-alert>
                 <!--Check if the user is logged in. If it is not, display only the following texxt. If it is logged in, display the posts-->
                 <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
           
@@ -52,6 +60,7 @@ export default {
         filesData: [],
         prevPage: '',
         nextPage: '',
+        errorReturn: null,
         axios: require('axios').default,
       }
   },
@@ -119,23 +128,24 @@ export default {
             'authorization': this.$store.state.token
           },
           data:{
-            userName: response.data.userName
+            userName: response.data.user.userName
           }
         }).then(async (response) => {
-          this.posts = response.data.posts.results;
-          this.files = response.data.files.results;
+          this.errorReturn = null;
+          this.posts = response.data.result.posts.results;
+          this.files = response.data.result.files.results;
 
 
 
-          if(response.data.posts.next !== undefined)
-            this.nextPage = response.data.posts.next;
+          if(response.data.result.posts.next !== undefined)
+            this.nextPage = response.data.result.posts.next;
           else
             this.nextPage = '';
 
 
 
-          if(response.data.posts.previous !== undefined)
-            this.prevPage = response.data.posts.previous;
+          if(response.data.result.posts.previous !== undefined)
+            this.prevPage = response.data.result.posts.previous;
           else
             this.prevPage = '';
 
@@ -146,13 +156,25 @@ export default {
             await this.getEachFile(this.posts[increment].id);
             increment++;
           }
+
+          this.$store.dispatch("addToken", response.data.token);
           
-        }, 
+        }).catch( 
         (error) => {
-          this.errorReturn = 'Failed to login. Incorrect username or password!'; 
-          console.log(error);
-          this.validReturn = null;
+          if(error.response.status == 401){
+            this.$store.dispatch("addToken", 'undefined');
+            this.$forceUpdate();
+            this.errorReturn = 'You have been logged out! Please go login again!';
+            console.log(401 + 'Your token had expired. Please login again!');
+          }
         });
+      }).catch((error)=>{
+        if(error.response.status == 401){
+          this.$store.dispatch("addToken", 'undefined');
+          this.$forceUpdate();
+          this.errorReturn = 'You have been logged out! Please go login again!';
+          console.log(401 + ': Your token had expired. Please login again!');
+        }
       })
       
     },

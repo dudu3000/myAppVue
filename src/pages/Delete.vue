@@ -77,12 +77,12 @@ export default {
         }).then((response) => {
           this.validReturn = response.data.text;
           this.errorReturn = null;
+          this.$store.dispatch("addToken", response.data.token);
           this.$store.dispatch('goToPage', 'home');
-          }, 
-        (error) => {
-          this.errorReturn = 'Failed to delete the post. Please try again.'; 
-          console.log(error);
-          this.validReturn = null;
+        }).catch((error)=>{
+          this.errorReturn = 'Your request of deleteing post failed with status: ' + error.response.status;
+          this.$store.dispatch("addToken", 'undefined');
+          console.log(error.response.status + ': Failed to delete this post!')
         });
       
 
