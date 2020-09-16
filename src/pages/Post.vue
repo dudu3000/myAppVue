@@ -111,7 +111,6 @@ export default {
             'description': this.description
           }
         }).then((res) => {
-            console.log(res);
             this.validReturn = res.data.text;
             this.errorReturn = null;
 

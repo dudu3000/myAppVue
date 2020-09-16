@@ -128,7 +128,7 @@ export default {
             'authorization': this.$store.state.token
           },
           data:{
-            userName: response.data.user.userName
+            userName: response.data.userName
           }
         }).then(async (response) => {
           this.errorReturn = null;
@@ -159,22 +159,15 @@ export default {
 
           this.$store.dispatch("addToken", response.data.token);
           
-        }).catch( 
-        (error) => {
-          if(error.response.status == 401){
-            this.$store.dispatch("addToken", 'undefined');
+        }).catch( (error) => {
             this.$forceUpdate();
-            this.errorReturn = 'You have been logged out! Please go login again!';
-            console.log(401 + 'Your token had expired. Please login again!');
-          }
+            this.errorReturn = error.response.data.error;
+            console.log(error.response.status + ': ' + error.response.data.error);
         });
       }).catch((error)=>{
-        if(error.response.status == 401){
-          this.$store.dispatch("addToken", 'undefined');
-          this.$forceUpdate();
-          this.errorReturn = 'You have been logged out! Please go login again!';
-          console.log(401 + ': Your token had expired. Please login again!');
-        }
+            this.$forceUpdate();
+            this.errorReturn = error.response.data.error;
+            console.log(error.response.status + ': ' + error.response.data.error);
       })
       
     },

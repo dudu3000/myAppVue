@@ -148,15 +148,9 @@ export default {
 
           this.$store.dispatch("addToken", response.data.token);
         }).catch((error)=>{
-          if(error.response.status == 401){
-            this.$store.dispatch("addToken", 'undefined');
             this.$forceUpdate();
-            this.errorReturn = 'Your token has expired! Please go login again!';
-            console.log(error.response.status + ': Your token has expired!');
-          }else if(error.response.status == 404){
-            this.errorReturn = 'User not found!';
-            console.log(error.response.status + ': User not found!');
-          }
+            this.errorReturn = error.response.data.error;
+            console.log(error.response.status + ': ' + error.response.data.error);
         });
       
     },

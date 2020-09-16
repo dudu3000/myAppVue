@@ -71,8 +71,8 @@ export default {
                 this.token = response.data.token;
                 this.$store.dispatch("goToPage", "home");
             },error => {
-                this.errorReturn ="Failed to login. Incorrect username or password!";
-                console.log(error);
+                this.errorReturn = error.response.data.error;
+                console.log(error.response.status + ': ' + error.response.data.error)
                 this.validReturn = null;
             });
         }

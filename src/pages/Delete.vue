@@ -24,18 +24,18 @@
             {{validReturn}}
           </v-alert>
 
-          <v-alert      
-            color="#C51162"
-            dark
-            icon="mdi-material-design"
-            border="right"
-            v-if="errorReturn !== null"
-          >
-            {{errorReturn}}
-          </v-alert>
           <v-btn rounded color="yellow darken-4" dark v-on:click="deletePost()">Yes</v-btn>
           <v-btn rounded color="yellow darken-4" dark v-on:click="$store.dispatch('goToPage', 'home')">No</v-btn>
         </div>
+        <v-alert      
+          color="#C51162"
+          dark
+          icon="mdi-material-design"
+          border="right"
+          v-if="errorReturn !== null"
+        >
+          {{errorReturn}}
+        </v-alert>
         <div v-if="errorReturn !== null">
           <v-btn rounded color="yellow darken-4" dark v-on:click="$store.dispatch('goToPage', 'home')">Go home</v-btn>
         </div>
@@ -80,9 +80,9 @@ export default {
           this.$store.dispatch("addToken", response.data.token);
           this.$store.dispatch('goToPage', 'home');
         }).catch((error)=>{
-          this.errorReturn = 'Your request of deleteing post failed with status: ' + error.response.status;
-          this.$store.dispatch("addToken", 'undefined');
-          console.log(error.response.status + ': Failed to delete this post!')
+          
+          this.errorReturn = error.response.data.error;
+          console.log(error.response.status + ': ' + error.response.data.error)
         });
       
 
@@ -103,3 +103,4 @@ export default {
 
 
 </style>
+
