@@ -4,7 +4,7 @@
       <v-container>
         <v-col cols="12">
           <v-row>
-            <v-card width="100%" class="ma-3 pa-6 red accent-2" dark outlined centered justify="center" height="1300px">
+            <v-card width="100%" class="ma-3 pa-6 background-card" dark outlined centered justify="center" height="1300px">
               <h1>Home</h1>
                 <b>Welcome</b><br>
                 
@@ -23,14 +23,19 @@
                   <!--Execute a request to back-end server when the page is loaded first time.-->
                   <div v-if="firstCall == 0">{{ getPosts() }}</div>
 
+                  <profile :user="userData"/>
+
+
+                  <!--Button used to jump to post page-->
+                  <h1 class="right">
+                      <v-btn class="mx-2" fab dark color="indigo" v-on:click="Post()">
+                        <v-icon dark>mdi-plus</v-icon>
+                      </v-btn>Post</h1><br><br><br>
 
                   <!--Display the buttons for next page and prev page if they exist-->
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(true, false)" v-if="prevPage !== ''">Previous page</v-btn>
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
-  
-                  <!--Button used to jump to post page-->
-                  <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-on:click="Post()"> Make a post </v-btn>
-
+                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1><pre> </pre> Previous page</v-btn>
+                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page <pre> </pre><h1>></h1></v-btn><br><br>
+                  
                   <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
                 </div><br>
           </v-card>
@@ -47,6 +52,7 @@
 
 <script>
 import Vue from 'vue';
+import profile from '@/components/user_components/profile.vue';
 import userContent from './../components/posts_components/userContent.vue';
 export default { 
   name: 'home',
@@ -61,11 +67,13 @@ export default {
         prevPage: '',
         nextPage: '',
         errorReturn: null,
+        userData: '',
         axios: require('axios').default,
       }
   },
   components:{
-    userContent
+    userContent,
+    profile
   },
   methods:{
 
@@ -90,6 +98,20 @@ export default {
     },
 
 
+    getProfilePicture: async function(id){
+        //Send request for users information from token
+        await this.axios({
+            method: 'get',
+            url: 'http://' + this.$store.state.server + ':3000/post/' + id,
+            headers:{
+              'authorization': this.$store.state.token
+            }
+        }).then((response)=>{
+            this.userData.profilePicture = response.data.data;
+        }).catch((error)=>{
+            console.log(error);
+        });
+    },
 
 
 
@@ -121,6 +143,7 @@ export default {
         }
       }).then((response)=>{
         //Send request to get posts
+        this.userData = response.data;
         this.axios({
           method: 'post',
           url: 'http://' + this.$store.state.server + ':3000/post?page=' + this.page + '&limit=6',
@@ -152,6 +175,7 @@ export default {
 
 
           var increment = 0;
+          this.getProfilePicture(this.userData.profilePicture);
           while(increment < this.files.length){
             await this.getEachFile(this.posts[increment].id);
             increment++;

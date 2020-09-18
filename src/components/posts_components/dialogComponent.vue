@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="EachPost">
         <!--Each post is displayed using a dialog template, so when you click one of the images, a dialog box is open.-->
         <v-dialog v-model="dialog" height="auto" max-width="800">
           <!--Here starts the activator for the dialog box. The activator si the entire post.-->

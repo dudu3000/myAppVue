@@ -4,7 +4,7 @@
       <v-container>
         <v-col cols="12">
           <v-row>
-            <v-card width="100%" class="ma-3 pa-6 red accent-2" dark outlined centered justify="center" height="1300px">
+            <v-card width="100%" class="ma-3 pa-6 background-card" dark outlined centered justify="center" height="1300px">
               <h1>Search</h1>
                 <b>Welcome</b><br>
                 
@@ -19,13 +19,13 @@
 
                 <v-text-field label="Search" required placeholder="Username" v-model="userName" @keypress="getPosts(false, false)"></v-text-field>
                 
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts()">Search user profile</v-btn><br><br>
-
+                  <v-btn large color="indigo lighten-1" v-on:click="getPosts()">Search user profile</v-btn><br><br>
+                  <profile v-if="errorReturn == null & userName !== ''" :user="userData"/>
                   <!--Display the buttons for next page and prev page if they exist-->
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(true, false)" v-if="prevPage !== ''">Previous page</v-btn>
-                  <v-btn rounded color="yellow darken-4" dark v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page</v-btn><br><br>
+                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1><pre> </pre> Previous page</v-btn>
+                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page <pre> </pre><h1>></h1></v-btn><br><br>
   
-                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
+                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>                  
 
                 </div><br>
           </v-card>
@@ -41,6 +41,7 @@
 
 <script>
 import Vue from 'vue';
+import profile from '@/components/user_components/profile.vue';
 import userContent from './../components/posts_components/userContent.vue';
 export default { 
   name: 'home',
@@ -55,12 +56,14 @@ export default {
         prevPage: '',
         nextPage: '',
         userName: '',
+        userData: '',
         errorReturn: null,
         axios: require('axios').default,
       }
   },
   components: {
-    userContent
+    userContent,
+    profile,
   },
   methods:{
     console: function(test){
@@ -81,6 +84,22 @@ export default {
           var bytes = response.data.data;
           Vue.set(this.filesData, id, bytes);
       })
+    },
+
+    
+    getProfilePicture: function(id){
+        //Send request for users information from token
+        this.axios({
+            method: 'get',
+            url: 'http://' + this.$store.state.server + ':3000/post/' + id,
+            headers:{
+              'authorization': this.$store.state.token
+            }
+        }).then((response)=>{
+        this.userData.profilePicture = response.data.data;
+        }).catch((error)=>{
+            console.log(error);
+        });
     },
 
 
@@ -120,6 +139,7 @@ export default {
             userName: this.userName
           }
         }).then(async (response) => {
+          this.userData = response.data.user;
           this.errorReturn = null;
           this.posts = response.data.result.posts.results;
           this.files = response.data.result.files.results;
@@ -141,6 +161,7 @@ export default {
 
 
           var increment = 0;
+          this.getProfilePicture(this.userData.profilePicture);
           while(increment < this.files.length){
             await this.getEachFile(this.posts[increment].id);
             increment++;
@@ -152,10 +173,11 @@ export default {
             this.errorReturn = error.response.data.error;
             console.log(error.response.status + ': ' + error.response.data.error);
         });
+
       
     },
 
-  }
+  },
 }
 </script>
 

@@ -8,7 +8,7 @@
           <v-row>
             <v-card
             width="100%"
-            class="ma-3 pa-6 red accent-2"
+            class="ma-3 pa-6 background-card"
             dark
             outlined
             centered
@@ -79,8 +79,7 @@
             type="date"
             v-model="bday"
           ></v-text-field>
-
-          <v-btn rounded color="yellow darken-4" dark v-on:click="register()">Create account</v-btn>
+          <v-btn large color="indigo lighten-1" v-on:click="register()">Create account</v-btn>
 
             </v-card>
           </v-row>

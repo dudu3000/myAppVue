@@ -6,7 +6,7 @@
                     <v-row>
                         <v-card
                             width="100%"
-                            class="ma-3 pa-6 red accent-2"
+                            class="ma-3 pa-6 background-card"
                             dark
                             outlined
                             centered
@@ -33,7 +33,7 @@
                                 v-model="password"
                             ></v-text-field>
 
-                            <v-btn rounded color="yellow darken-4" dark v-on:click="login()">Login</v-btn>
+                            <v-btn large color="indigo lighten-1" v-on:click="login()">Login</v-btn>
                         </v-card>
                     </v-row>
                 </v-col>

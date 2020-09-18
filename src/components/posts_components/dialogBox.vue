@@ -1,7 +1,7 @@
 <template>
     <div v-if="post">
         <v-card>
-          <v-card-title class="headline red lighten-2" color="red accent-4">
+          <v-card-title class="headline background-card" color="red accent-4">
             {{ post.title }}
           </v-card-title>
           <!--Display the entire description.-->

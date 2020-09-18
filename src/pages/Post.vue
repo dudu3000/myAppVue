@@ -8,7 +8,7 @@
           <v-row>
             <v-card
             width="100%"
-            class="ma-3 pa-6 red accent-2"
+            class="ma-3 pa-6 background-card"
             dark
             outlined
             centered
@@ -146,11 +146,11 @@ export default {
 }
 
 .submit{
-  background-color: #F57F17;
+  background-color: #5C6BC0;
   padding: 7px;
   font-weight: 700;
-  border-radius:25px;
-  padding-left: 17px;
+  border-radius:5px;
+  padding-left: 15px;
   padding-right: 17px;
   box-shadow: 0px 1px 1px #000000;
   font-family: Arial, Helvetica, sans-serif;
@@ -158,12 +158,12 @@ export default {
 }
 
 .submit:hover{
-  background-color: #fc8b28;
+  background-color: #7986CB;
   transition: 0.5s;
 }
 
 .submit:active{
-  background-color: #faa963;
+  background-color: #7986CB;
   transition: 0.2s;
 }
 </style>

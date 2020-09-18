@@ -6,20 +6,12 @@
     <v-app-bar
       app
       dark
-      class="red"
+      class="background-card"
     >
       <div class="d-flex align-center mr-4">
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="./assets/logo.png"
-          width="100"
-        />
       </div>
 
-      <h1>myApp</h1>
+      <h1>SelfieNet</h1>
 
       <v-spacer></v-spacer>
 
@@ -149,14 +141,14 @@ export default {
   height: 900px;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
-  align-content: space-around;
+  justify-content: center;
+  align-content: start;
 }
 
 .image{
   object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 15px 15px 10px #000000;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #000000;
   transition: 0.5s;
   width:500px;
   max-width:100%;
@@ -164,11 +156,11 @@ export default {
 }
 
 .image:hover{
-  box-shadow: 0px 0px 10px #000000;
+  box-shadow: 5px 5px 10px #000000;
   transition: 0.5s;
-  -webkit-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
+  -webkit-transform: scale(1.03);
+  -ms-transform: scale(1.03);
+  transform: scale(1.03);
 }
 
 .right{
@@ -176,13 +168,14 @@ export default {
 }
 .flexitem{
   height:auto;
+  margin: 5% 5% 5% 5%;
 }
 .title{
   font-weight: bold;
   font-style: italic;
   text-shadow: 2px 2px 7px #000000;
   border-bottom: 2px solid #ffffff;
-  width:80%
+  width:100%
 }
 
 .description{
@@ -212,6 +205,23 @@ export default {
   height: 150px;
 }
 
+
+.background-card {
+  background-image: linear-gradient(to bottom right, #00dddd, #003333);
+}
+
+.EachPost{
+  box-shadow: 0px 0px 30px #000000;
+  margin: 5% 5% 5% 5%;
+}
+
+
+.profile {
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+  border-radius: 150px;
+}
 
 
 </style>
