@@ -146,7 +146,7 @@ export default {
 }
 
 .submit{
-  background-color: #5C6BC0;
+  background-color: #757575;
   padding: 7px;
   font-weight: 700;
   border-radius:5px;
@@ -158,12 +158,12 @@ export default {
 }
 
 .submit:hover{
-  background-color: #7986CB;
+  background-color: #858585;
   transition: 0.5s;
 }
 
 .submit:active{
-  background-color: #7986CB;
+  background-color: #858585;
   transition: 0.2s;
 }
 </style>

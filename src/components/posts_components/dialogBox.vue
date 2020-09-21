@@ -1,7 +1,7 @@
 <template>
     <div v-if="post">
         <v-card>
-          <v-card-title class="headline background-card" color="red accent-4">
+          <v-card-title class="headline" style="background-color: #757575; color: #ffffff;">
             {{ post.title }}
           </v-card-title>
           <!--Display the entire description.-->
@@ -25,7 +25,7 @@
           <v-divider></v-divider>
           <v-card-text class=text-center><br>
 
-            <v-btn target="_blank" class="right" color="red accent-4" dark rounded v-if="$store.state.page == 'home'" v-on:click="DeletePost(post.id)"> Delete this post </v-btn><br><br>
+            <v-btn target="_blank" class="right" color="#212121" dark rounded v-if="$store.state.page == 'home'" v-on:click="DeletePost(post.id)"> Delete this post </v-btn><br><br>
 
           </v-card-text>
         </v-card>

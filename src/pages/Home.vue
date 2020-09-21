@@ -14,11 +14,7 @@
                       v-if="errorReturn !== null"
                   >{{errorReturn}}</v-alert>
                 <!--Check if the user is logged in. If it is not, display only the following texxt. If it is logged in, display the posts-->
-                <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
-                <br>
-                <br>
-                <br>
-                <br>
+                <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div><br><br><br><br>
             </div>
 
                 <div v-if="$store.state.token !== 'undefined'">
