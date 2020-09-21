@@ -8,7 +8,9 @@
             <div class="flexitem" v-bind="attrs" v-on="on" v-on:click="getSimilarPosts(post.id)">
               <postName :postTitle="post.title"/>
               <postDescription :postDescription="post.description"/>
+              <center>
               <img v-bind:src="'data:image/jpg;base64,'+ imageData" class="image" />
+              </center>
             </div>
           </template>
               <dialogBox :post="post" :imageData="imageData" :nrOfRecommendend="nrOfRecommendend" :similarFilesData="similarFilesData"/>

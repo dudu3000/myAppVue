@@ -1,7 +1,7 @@
 <template>
     <div class="title">
           <!--Display the title for each post in this "for"-->
-          <h3>{{ postTitle }}</h3>
+          <h2>{{ postTitle }}</h2>
     </div>
 </template>
 

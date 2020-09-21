@@ -6,7 +6,7 @@
     <v-app-bar
       app
       dark
-      class="background-card"
+      color="#0097a7"
     >
       <div class="d-flex align-center mr-4">
       </div>
@@ -25,16 +25,6 @@
         text
       >
         <span class="mr-2">Home</span>
-      </v-btn>
-
-
-      <v-btn
-        v-if="$store.state.token !== 'undefined'"
-        v-on:click="OtherUser()"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Search for users</span>
       </v-btn>
 
 
@@ -72,7 +62,7 @@
 
     </v-app-bar>
 
-    <v-main>
+    <v-main style="background-color: #212121;">
       <Home v-if="$store.state.page == 'home'"></Home>
       <OtherUser v-if="$store.state.page == 'otheruser'"></OtherUser>
       <Login v-if="$store.state.page == 'login'"></Login>
@@ -148,19 +138,25 @@ export default {
 .image{
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px #000000;
+  box-shadow: 0px 0px 10px #ffffff;
   transition: 0.5s;
   width:500px;
   max-width:100%;
   height:300px;
+  -webkit-box-shadow: -93px 93px 0px -85px #ffffff, 93px -93px 0px -85px #ffffff;
+  -moz-box-shadow: -93px 93px 0px -85px #ffffff, 93px -93px 0px -85px #ffffff;
+  box-shadow: -93px 93px 0px -85px #ffffff, 93px -93px 0px -85px #ffffff;
 }
 
 .image:hover{
-  box-shadow: 5px 5px 10px #000000;
+  box-shadow: 5px 5px 10px #ffffff;
   transition: 0.5s;
   -webkit-transform: scale(1.03);
   -ms-transform: scale(1.03);
   transform: scale(1.03);
+  -webkit-box-shadow: 93px 93px 0px -85px #ffffff, -93px -93px 0px -85px #ffffff;
+  -moz-box-shadow: 93px 93px 0px -85px #ffffff, -93px -93px 0px -85px #ffffff;
+  box-shadow: 93px 93px 0px -85px #ffffff, -93px -93px 0px -85px #ffffff;
 }
 
 .right{
@@ -175,11 +171,13 @@ export default {
   font-style: italic;
   text-shadow: 2px 2px 7px #000000;
   border-bottom: 2px solid #ffffff;
-  width:100%
+  width:100%;
+  margin-bottom: 5px;
 }
 
 .description{
   width: 200px;
+  padding-bottom: 10px;
 }
 
 .imageDialog{
@@ -206,13 +204,22 @@ export default {
 }
 
 
-.background-card {
-  background-image: linear-gradient(to bottom right, #00dddd, #003333);
+.EachPost{
+  margin: 5% 5% 5% 5%;
+  padding: 5px;
+  padding-top: 1px;
+  border-top: 20px solid #0097a7;
+  -webkit-box-shadow: 93px 93px 0px -90px #ffffff, -93px -93px 0px -90px #ffffff;
+  -moz-box-shadow: 93px 93px 0px -90px #ffffff, -93px -93px 0px -90px #ffffff;
+  box-shadow: 93px 93px 0px -90px #ffffff, -93px -93px 0px -90px #ffffff;
+  transition: 0.5s;
 }
 
-.EachPost{
-  box-shadow: 0px 0px 30px #000000;
-  margin: 5% 5% 5% 5%;
+.EachPost:hover{
+  -webkit-box-shadow: -93px 93px 0px -90px #ffffff, 93px -93px 0px -90px #ffffff;
+  -moz-box-shadow: -93px 93px 0px -90px #ffffff, 93px -93px 0px -90px #ffffff;
+  box-shadow: -93px 93px 0px -90px #ffffff, 93px -93px 0px -90px #ffffff;
+  transition: 0.5s;
 }
 
 

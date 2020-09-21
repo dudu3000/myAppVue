@@ -1,19 +1,8 @@
 <template>
   <div id="app">
-    <main>
-
-
-      <v-container>
-        <v-col cols="12">
-          <v-row>
-            <v-card
-            width="100%"
-            class="ma-3 pa-6 background-card"
-            dark
-            outlined
-            centered
-            justify="center"
-            >
+    <main><div style="margin-top:0px;"></div>
+    <v-row>
+        <v-card width="100%" class="pa-6 background-card" dark>
         <div v-if="errorReturn == null">
           <h1>Are you sure you want to delete this post?</h1>
           
@@ -39,10 +28,8 @@
         <div v-if="errorReturn !== null">
           <v-btn rounded color="yellow darken-4" dark v-on:click="$store.dispatch('goToPage', 'home')">Go home</v-btn>
         </div>
-            </v-card>
-          </v-row>
-        </v-col>
-      </v-container>
+        </v-card>
+      </v-row>
     </main>
   </div>
 

@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-    <main>
-      <v-container>
-        <v-col cols="12">
-          <v-row>
-            <v-card width="100%" class="ma-3 pa-6 background-card" dark outlined centered justify="center" height="1300px">
+    <main><div style="margin-top:0px;margin-bottom:0px;"></div>
+    <v-row>
+          <v-card width="100%" class="pa-6" color="#212121" dark>
+            <div style="margin-left: 10%;">
               <h1>Home</h1>
                 <b>Welcome</b><br>
-                
                   <v-alert
                       color="#C51162"
                       dark
@@ -17,31 +15,29 @@
                   >{{errorReturn}}</v-alert>
                 <!--Check if the user is logged in. If it is not, display only the following texxt. If it is logged in, display the posts-->
                 <div v-if="$store.state.token == 'undefined'">Please login. If you don't have an account, go and create one.</div>
-          
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
 
                 <div v-if="$store.state.token !== 'undefined'">
                   <!--Execute a request to back-end server when the page is loaded first time.-->
                   <div v-if="firstCall == 0">{{ getPosts() }}</div>
+                  <div style="display: inline-flex; flex-wrap: nowrap; width: 100%;">
+                  <leftMenu :user="userData"/>
+                  <profile :user="userData" style="margin-left: 10%; width: 100%;"/>
+                  </div>
 
-                  <profile :user="userData"/>
-
-
-                  <!--Button used to jump to post page-->
-                  <h1 class="right">
-                      <v-btn class="mx-2" fab dark color="indigo" v-on:click="Post()">
-                        <v-icon dark>mdi-plus</v-icon>
-                      </v-btn>Post</h1><br><br><br>
-
+                  <div style="display:flex; justify-content: center; align-items: center">
                   <!--Display the buttons for next page and prev page if they exist-->
-                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1><pre> </pre> Previous page</v-btn>
-                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page <pre> </pre><h1>></h1></v-btn><br><br>
-                  
+                  <v-btn large height="700px" color="#353535" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1></v-btn>
                   <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
+                  <v-btn large height="700px" color="#353535" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right"><h1>></h1></v-btn><br><br>
+                  </div>
                 </div><br>
           </v-card>
-          </v-row>
-        </v-col>
-      </v-container>
+      </v-row>
     </main>
   </div>
  
@@ -53,6 +49,7 @@
 <script>
 import Vue from 'vue';
 import profile from '@/components/user_components/profile.vue';
+import leftMenu from '@/components/user_components/leftMenu.vue';
 import userContent from './../components/posts_components/userContent.vue';
 export default { 
   name: 'home',
@@ -73,7 +70,8 @@ export default {
   },
   components:{
     userContent,
-    profile
+    profile,
+    leftMenu
   },
   methods:{
 
@@ -194,16 +192,6 @@ export default {
             console.log(error.response.status + ': ' + error.response.data.error);
       })
       
-    },
-
-
-
-
-
-
-
-    Post: function(){
-      this.$store.dispatch('goToPage', 'post');
     },
 
   }

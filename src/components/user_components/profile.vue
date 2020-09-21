@@ -42,7 +42,7 @@ export default {
 
 <style>
     .profileIndex{
-        color: #BBDEFB;
+        color: #009688;
         text-shadow: 0px 0px 10px #000000;
     }
     .profileImage{

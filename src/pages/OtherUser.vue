@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <main>
-      <v-container>
-        <v-col cols="12">
           <v-row>
-            <v-card width="100%" class="ma-3 pa-6 background-card" dark outlined centered justify="center" height="1300px">
+            <v-card width="100%" class="ma-3 pa-6 background-card" dark height="1700px">
               <h1>Search</h1>
                 <b>Welcome</b><br>
                 
@@ -19,7 +17,7 @@
 
                 <v-text-field label="Search" required placeholder="Username" v-model="userName" @keypress="getPosts(false, false)"></v-text-field>
                 
-                  <v-btn large color="indigo lighten-1" v-on:click="getPosts()">Search user profile</v-btn><br><br>
+                  <v-btn large color="#757575" v-on:click="getPosts()">Search user profile</v-btn><br><br><br><br>
                   <profile v-if="errorReturn == null & userName !== ''" :user="userData"/>
                   <!--Display the buttons for next page and prev page if they exist-->
                   <v-btn large color="indigo lighten-1" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1><pre> </pre> Previous page</v-btn>
@@ -30,8 +28,6 @@
                 </div><br>
           </v-card>
           </v-row>
-        </v-col>
-      </v-container>
     </main>
   </div>
  
