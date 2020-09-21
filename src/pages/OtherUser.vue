@@ -19,11 +19,14 @@
                 
                   <v-btn large color="#757575" v-on:click="getPosts()">Search user profile</v-btn><br><br><br><br>
                   <profile v-if="errorReturn == null & userName !== ''" :user="userData"/>
+
+                  
+                  <div style="display:flex; justify-content: center; align-items: center">
                   <!--Display the buttons for next page and prev page if they exist-->
-                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1><pre> </pre> Previous page</v-btn>
-                  <v-btn large color="indigo lighten-1" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right">Next page <pre> </pre><h1>></h1></v-btn><br><br>
-  
-                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>                  
+                  <v-btn large height="700px" color="#353535" v-on:click="getPosts(true, false)" v-if="prevPage !== ''"><h1><span>&#60;</span> </h1></v-btn>
+                  <userContent :files="files" :posts="posts" :dialog="dialog" :filesData="filesData"/>
+                  <v-btn large height="700px" color="#353535" v-on:click="getPosts(false, true)" v-if="nextPage !== ''" class="right"><h1>></h1></v-btn><br><br>
+                  </div>             
 
                 </div><br>
           </v-card>
