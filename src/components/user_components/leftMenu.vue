@@ -38,7 +38,7 @@
               </v-list-item-icon>
               <v-list-item-title><h3>Search for users</h3></v-list-item-title>
             </v-list-item>
-            <v-list-item link>
+            <v-list-item link v-on:click="EditProfile()">
               <v-list-item-icon>
                 <v-icon>mdi-border-color</v-icon>
               </v-list-item-icon>
@@ -65,6 +65,9 @@
             OtherUser: function(){
               this.$store.dispatch('goToPage', 'otheruser');
             },
+            EditProfile: function(){
+              this.$store.dispatch('updateeditState', true);
+            }
         }
   }
 </script>

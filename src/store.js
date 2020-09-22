@@ -13,7 +13,8 @@ export default new Vuex.Store({
     token: 'undefined',
     page: 'home',
     errorCode: 0,
-    idPostToBeDeleted: 0
+    idPostToBeDeleted: 0,
+    editState: false
   },
   mutations: {
     addToken (state, token){
@@ -23,6 +24,7 @@ export default new Vuex.Store({
       return state.token = 'undefined';
     },
     goToPage (state, page){
+      state.editState = false;
       return state.page = page;
     },
     updateErrorCode (state, code){
@@ -30,6 +32,9 @@ export default new Vuex.Store({
     },
     updateIdPostToBeDeleted (state, id){
       return state.idPostToBeDeleted = id;
+    },
+    updateeditState (state, data){
+      return state.editState = data;
     }
   },
   actions: {
@@ -47,6 +52,9 @@ export default new Vuex.Store({
     },
     updateIdPostToBeDeleted (context, id){
       context.commit('updateIdPostToBeDeleted', id);
+    },
+    updateeditState (context, data){
+      context.commit('updateeditState', data);
     }
   },
   getters: {
