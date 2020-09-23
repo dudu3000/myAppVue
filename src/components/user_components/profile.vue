@@ -96,6 +96,7 @@ export default {
                 this.errorReturn = null;
 
                 this.$store.dispatch("addToken", res.data.token);
+                this.$store.dispatch('updateRefreshPage', 'home');
                 this.$store.dispatch('goToPage', 'refresh');
             }).catch((error)=>{
               this.errorReturn = error.response.message;

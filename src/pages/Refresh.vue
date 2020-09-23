@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{$store.dispatch('goToPage', 'home')}}
+        {{$store.dispatch('goToPage', $store.state.refreshPage)}}
     </div>
 </template>
 

@@ -15,7 +15,8 @@ export default new Vuex.Store({
     errorCode: 0,
     idPostToBeDeleted: 0,
     editState: false,
-    similarUser: ''
+    similarUser: '',
+    refreshPage: 'home'
   },
   mutations: {
     addToken (state, token){
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     updateSimilarUser (state, similarUser){
       return state.similarUser = similarUser;
+    },
+    updateRefreshPage (state, refreshPage){
+      return state.refreshPage = refreshPage;
     }
   },
   actions: {
@@ -62,6 +66,9 @@ export default new Vuex.Store({
     },
     updateSimilarUser (context, similarUser){
       context.commit('updateSimilarUser', similarUser);
+    },
+    updateRefreshPage (context, refreshPage){
+      context.commit('updateRefreshPage', refreshPage);
     }
   },
   getters: {

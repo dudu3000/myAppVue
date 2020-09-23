@@ -23,7 +23,8 @@
         methods: {
             goToUserPage: function(index){
                 this.$store.dispatch('updateSimilarUser', this.usersOfSimilarPosts[index]);
-                this.$store.dispatch('goToPage', 'otheruser');
+                this.$store.dispatch('updateRefreshPage', 'otheruser');
+                this.$store.dispatch('goToPage', 'refresh');
             }
         }
     }
