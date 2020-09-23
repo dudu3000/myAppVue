@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <main>
+      <div v-once>
+        {{ getPosts(false, false) }}
+      </div>
           <v-row>
             <v-card width="100%" class="ma-3 pa-6 background-card" dark height="1700px">
               <h1>Search</h1>
@@ -54,7 +57,7 @@ export default {
         filesData: [],
         prevPage: '',
         nextPage: '',
-        userName: '',
+        userName: this.$store.state.similarUser,
         userData: '',
         errorReturn: null,
         axios: require('axios').default,
@@ -114,6 +117,7 @@ export default {
 
 
     getPosts: function(prev = false, next = false){
+      this.$store.dispatch('updateSimilarUser', '');
       //Reset used variables.
       this.files = [];
       this.posts = [];

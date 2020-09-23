@@ -1,7 +1,7 @@
 <template>
     <div style="display: inline-flex; width:100%;">
-        <div v-for="imgages in similarFilesData" :key="imgages" style="width: 25%;">
-            <img v-bind:src="'data:image/jpg;base64,'+ imgages" class="recomandedImage"/>
+        <div v-for="(imgages, index) in similarFilesData" :key="imgages" style="width: 25%;">
+            <a><img v-bind:src="'data:image/jpg;base64,'+ imgages" class="recomandedImage similarImage" v-on:click="goToUserPage(index)"/></a>
         </div>
     </div>
 </template>
@@ -11,7 +11,8 @@
         name: 'similarImages',
         props: [
             'similarFilesData',
-            'nrOfRecommendend'
+            'nrOfRecommendend',
+            'usersOfSimilarPosts'
         ],
         data(){
             return {
@@ -20,11 +21,22 @@
             }
         },
         methods: {
-            
+            goToUserPage: function(index){
+                this.$store.dispatch('updateSimilarUser', this.usersOfSimilarPosts[index]);
+                this.$store.dispatch('goToPage', 'otheruser');
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
+    .similarImage{
+        transition: 0.5s;
+    }
+    .similarImage:hover{
+        -webkit-transform: scale(1.03);
+        -ms-transform: scale(1.03);
+        transform: scale(1.03);
+        transition: 0.5s;
+    }
 </style>

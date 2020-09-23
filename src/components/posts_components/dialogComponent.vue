@@ -13,7 +13,7 @@
               </center>
             </div>
           </template>
-              <dialogBox :post="post" :imageData="imageData" :nrOfRecommendend="nrOfRecommendend" :similarFilesData="similarFilesData"/>
+              <dialogBox :post="post" :imageData="imageData" :nrOfRecommendend="nrOfRecommendend" :similarFilesData="similarFilesData" :usersOfSimilarPosts="usersOfSimilarPosts"/>
         </v-dialog>
 
     </div>
@@ -35,6 +35,7 @@
             return {
                 dialog: this.postsDialog,
                 similarFilesData: [],
+                usersOfSimilarPosts: [],
                 nrOfRecommendend: 0,
                 errorReturn: null,
                 axios: require('axios').default,
@@ -58,7 +59,9 @@
                 this.nrOfRecommendend = data.length;
                 for(var increment = 0; increment < data.length; increment++){
                   var bytes = data[increment].data;
+                  var userName = data[increment].userName;
                   Vue.set(this.similarFilesData, increment, bytes);
+                  Vue.set(this.usersOfSimilarPosts, increment, userName)
                 }
                 this.$store.dispatch("addToken", response.data.token);
               }).catch((error)=>{

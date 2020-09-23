@@ -20,7 +20,7 @@
 
           <v-divider></v-divider>
 
-            <similarImages :nrOfRecommendend="nrOfRecommendend" :similarFilesData="similarFilesData"/>
+            <similarImages :nrOfRecommendend="nrOfRecommendend" :similarFilesData="similarFilesData" :usersOfSimilarPosts="usersOfSimilarPosts"/>
 
           <v-divider></v-divider>
           <v-card-text class=text-center><br>
@@ -42,7 +42,8 @@
             'post',
             'imageData',
             'nrOfRecommendend',
-            'similarFilesData'
+            'similarFilesData',
+            'usersOfSimilarPosts'
         ],
         components: {
           awsParameters,
