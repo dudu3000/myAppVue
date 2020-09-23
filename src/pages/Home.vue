@@ -92,13 +92,16 @@ export default {
     },
 
 
-    getProfilePicture: async function(id){
+    getProfilePicture: async function(userName){
         //Send request for users information from token
         await this.axios({
-            method: 'get',
-            url: 'http://' + this.$store.state.server + ':3000/post/' + id,
+            method: 'post',
+            url: 'http://' + this.$store.state.server + ':3000/user/profile',
             headers:{
               'authorization': this.$store.state.token
+            },
+            data:{
+              userName: userName
             }
         }).then((response)=>{
             this.userData.profilePicture = response.data.data;
@@ -138,6 +141,7 @@ export default {
       }).then((response)=>{
         //Send request to get posts
         this.userData = response.data;
+        this.getProfilePicture(response.data.userName);
         this.axios({
           method: 'post',
           url: 'http://' + this.$store.state.server + ':3000/post?page=' + this.page + '&limit=6',
@@ -169,7 +173,6 @@ export default {
 
 
           var increment = 0;
-          this.getProfilePicture(this.userData.profilePicture);
           while(increment < this.files.length){
             await this.getEachFile(this.posts[increment].id);
             increment++;

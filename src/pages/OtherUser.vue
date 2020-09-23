@@ -85,17 +85,20 @@ export default {
       })
     },
 
-    
-    getProfilePicture: function(id){
+ 
+    getProfilePicture: async function(){
         //Send request for users information from token
-        this.axios({
-            method: 'get',
-            url: 'http://' + this.$store.state.server + ':3000/post/' + id,
+        await this.axios({
+            method: 'post',
+            url: 'http://' + this.$store.state.server + ':3000/user/profile',
             headers:{
               'authorization': this.$store.state.token
+            },
+            data:{
+              userName: this.userName
             }
         }).then((response)=>{
-        this.userData.profilePicture = response.data.data;
+            this.userData.profilePicture = response.data.data;
         }).catch((error)=>{
             console.log(error);
         });
@@ -139,6 +142,7 @@ export default {
           }
         }).then(async (response) => {
           this.userData = response.data.user;
+          this.getProfilePicture();
           this.errorReturn = null;
           this.posts = response.data.result.posts.results;
           this.files = response.data.result.files.results;
@@ -160,7 +164,6 @@ export default {
 
 
           var increment = 0;
-          this.getProfilePicture(this.userData.profilePicture);
           while(increment < this.files.length){
             await this.getEachFile(this.posts[increment].id);
             increment++;

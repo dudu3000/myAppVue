@@ -38,7 +38,7 @@
                     <span v-if="$store.state.editState == true">
                         <v-textarea width="100%" v-model="profileDescription"></v-textarea>
                     </span>
-                    <button class="submit" v-on:click="edit()" v-if="$store.state.editState == true">Save</button>
+                    <button class="submit" v-on:click="editProfile()" v-if="$store.state.editState == true">Save</button>
                     
                 </div>
             </h2>
@@ -57,7 +57,6 @@ export default {
     data(){
         return{
             file: [],
-            userName: '',
             email: '',
             birthDay: '',
             profileDescription: '',
@@ -66,16 +65,47 @@ export default {
         }
     },
     methods: {
-        edit: function(){
-            this.$store.dispatch('updateeditState', false);
-            this.valueOfInputState = 0;
-        },
         putDataToInputs: function(){
             this.valueOfInputState = 1;
-            this.userName = this.user.userName;
             this.email = this.user.email;
             this.birthDay = this.user.birthDay;
             this.profileDescription = this.user.profileDescription;
+        },
+        
+        editProfile () {
+            this.$store.dispatch('updateeditState', false);
+            this.valueOfInputState = 0;
+            var formData = new FormData();
+            formData.append("file", this.file);
+
+            this.axios({
+              method: 'post',
+              url: 'http://' + this.$store.state.server + ':3000/user/editProfile',
+              headers:{
+                'authorization': this.$store.state.token
+              },
+              data: formData,
+              params: {
+                'userName': this.userName,
+                'email': this.email,
+                'birthDay': this.birthDay,
+                'profileDescription': this.profileDescription
+              }
+            }).then((res) => {
+                this.validReturn = res.data.text;
+                this.errorReturn = null;
+
+                this.$store.dispatch("addToken", res.data.token);
+                this.$store.dispatch('goToPage', 'refresh');
+            }).catch((error)=>{
+              this.errorReturn = error.response.message;
+              console.log(error.response.status + ': ' + error.response.message) 
+              this.validReturn = null;
+              
+              this.$store.dispatch("addToken", 'undefined');
+              this.$forceUpdate();
+            });
+
         }
     }
 }

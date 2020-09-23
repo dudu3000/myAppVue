@@ -33,7 +33,7 @@
                                 v-model="password"
                             ></v-text-field>
 
-                            <v-btn large color="indigo lighten-1" v-on:click="login()">Login</v-btn>
+                            <v-btn large color="#757575" v-on:click="login()">Login</v-btn>
                         </v-card>
                     </v-row>
                 </v-col>

@@ -79,7 +79,7 @@
             type="date"
             v-model="bday"
           ></v-text-field>
-          <v-btn large color="indigo lighten-1" v-on:click="register()">Create account</v-btn>
+          <v-btn large color="#757575" v-on:click="register()">Create account</v-btn>
 
             </v-card>
           </v-row>

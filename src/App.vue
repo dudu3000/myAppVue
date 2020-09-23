@@ -70,6 +70,7 @@
       <Logout v-if="$store.state.page == 'logout'" style="display: none;"></Logout>
       <Post v-if="$store.state.page == 'post'"></Post>
       <Delete v-if="$store.state.page == 'delete'"></Delete>
+      <Refresh v-if="$store.state.page == 'refresh'"></Refresh>
     </v-main>
   </v-app>
 </template>
@@ -82,6 +83,7 @@ import Register from './pages/Register';
 import OtherUser from './pages/OtherUser';
 import Post from './pages/Post';
 import Delete from './pages/Delete';
+import Refresh from './pages/Refresh';
 
 export default {
   name: 'App',
@@ -93,7 +95,8 @@ export default {
     Register,
     OtherUser,
     Post,
-    Delete
+    Delete,
+    Refresh
   },
 
   data: () => ({
@@ -132,7 +135,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-content: start;
+  align-content: flex-start;
 }
 
 .image{

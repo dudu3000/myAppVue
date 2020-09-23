@@ -13,8 +13,8 @@
             {{validReturn}}
           </v-alert>
 
-          <v-btn rounded color="yellow darken-4" dark v-on:click="deletePost()">Yes</v-btn>
-          <v-btn rounded color="yellow darken-4" dark v-on:click="$store.dispatch('goToPage', 'home')">No</v-btn>
+          <v-btn rounded color="#757575" dark v-on:click="deletePost()">Yes</v-btn>
+          <v-btn rounded color="#757575" dark v-on:click="$store.dispatch('goToPage', 'home')">No</v-btn>
         </div>
         <v-alert      
           color="#C51162"
@@ -26,7 +26,7 @@
           {{errorReturn}}
         </v-alert>
         <div v-if="errorReturn !== null">
-          <v-btn rounded color="yellow darken-4" dark v-on:click="$store.dispatch('goToPage', 'home')">Go home</v-btn>
+          <v-btn rounded color="#757575" dark v-on:click="$store.dispatch('goToPage', 'home')">Go home</v-btn>
         </div>
         </v-card>
       </v-row>
