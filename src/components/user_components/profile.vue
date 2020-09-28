@@ -10,7 +10,7 @@
                     <v-icon>mdi-camera</v-icon>
                 </v-file-input>
                 </div>
-                <div style="margin-left: 8%; width: 40%; border-left: 1px solid #ffffff; padding: 10px;">
+                <div style="margin-left: 8%; width: 30%; border-left: 1px solid #ffffff; padding: 10px;">
                     <h5>
                     <span class="profileIndex">Username:</span> {{user.userName}} <br>
                     <span class="profileIndex">First name:</span> {{user.firstName}} <br>
@@ -32,8 +32,8 @@
                     </span>
                     </h5>
                 </div>
-                <div style="border-left: 1px solid #ffffff; padding: 10px;">
-                    <span class="profileIndex">Description:</span> 
+                <div style="border-left: 1px solid #ffffff; padding: 10px; width: 40%;">
+                    <span class="profileIndex">Description: </span> 
                     <span v-if="$store.state.editState == false">{{user.profileDescription}}</span>
                     <span v-if="$store.state.editState == true">
                         <v-textarea width="100%" v-model="profileDescription"></v-textarea>

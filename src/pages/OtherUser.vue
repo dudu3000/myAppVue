@@ -6,6 +6,8 @@
       </div>
           <v-row>
             <v-card width="100%" class="ma-3 pa-6 background-card" dark height="1700px">
+              <div v-if="$store.state.token !== 'undefined'">
+              <v-container>
               <h1>Search</h1>
                 <b>Welcome</b><br>
                 
@@ -16,11 +18,11 @@
                       border="right"
                       v-if="errorReturn !== null"
                   >{{errorReturn}}</v-alert>
-                <div v-if="$store.state.token !== 'undefined'">
 
                 <v-text-field label="Search" required placeholder="Username" v-model="userName" @keypress="getPosts(false, false)"></v-text-field>
                 
                   <v-btn large color="#757575" v-on:click="getPosts()">Search user profile</v-btn><br><br><br><br>
+                  </v-container>
                   <profile v-if="errorReturn == null & userName !== ''" :user="userData"/>
 
                   
